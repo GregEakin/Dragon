@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8D14891B-62DA-4C8E-B9AF-F1F2195BBEE3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Console</RootNamespace>
+    <AssemblyName>Console</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Inter\Access.cs" />
+    <Compile Include="Inter\And.cs" />
+    <Compile Include="Inter\Arith.cs" />
+    <Compile Include="Inter\Break.cs" />
+    <Compile Include="Inter\Constant.cs" />
+    <Compile Include="Inter\Do.cs" />
+    <Compile Include="Inter\Else.cs" />
+    <Compile Include="Inter\Expr.cs" />
+    <Compile Include="Inter\Id.cs" />
+    <Compile Include="Inter\If.cs" />
+    <Compile Include="Inter\Logical.cs" />
+    <Compile Include="Inter\Node.cs" />
+    <Compile Include="Inter\Not.cs" />
+    <Compile Include="Inter\Op.cs" />
+    <Compile Include="Inter\Or.cs" />
+    <Compile Include="Inter\Rel.cs" />
+    <Compile Include="Inter\Seq.cs" />
+    <Compile Include="Inter\Stmt.cs" />
+    <Compile Include="Inter\Temp.cs" />
+    <Compile Include="Inter\Unary.cs" />
+    <Compile Include="Inter\While.cs" />
+    <Compile Include="Lexical\Lexer.cs" />
+    <Compile Include="Lexical\Num.cs" />
+    <Compile Include="Lexical\Real.cs" />
+    <Compile Include="Lexical\Tag.cs" />
+    <Compile Include="Lexical\Token.cs" />
+    <Compile Include="Lexical\Word.cs" />
+    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Inter\Set.cs" />
+    <Compile Include="Inter\SetElem.cs" />
+    <Compile Include="Symbols\Array.cs" />
+    <Compile Include="Symbols\Env.cs" />
+    <Compile Include="Symbols\SType.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
