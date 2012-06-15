@@ -29,8 +29,10 @@ namespace Inter
 
         public virtual SType Check(SType p1, SType p2)
         {
-            if (p1 == SType.Bool && p2 == SType.Bool) return SType.Bool;
-            else return null;
+            if (p1 == SType.Bool && p2 == SType.Bool)
+                return SType.Bool;
+            else
+                return null;
         }
 
         public override Expr Gen()

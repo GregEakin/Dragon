@@ -13,8 +13,8 @@ namespace Inter
     /// </summary>
     public class While : Stmt
     {
-        Expr expr;
-        Stmt stmt;
+        private Expr expr;
+        private Stmt stmt;
 
         public While()
         {

@@ -12,8 +12,8 @@ namespace Inter
     /// </summary>
     public class Seq : Stmt
     {
-        readonly Stmt stmt1;
-        readonly Stmt stmt2;
+        private readonly Stmt stmt1;
+        private readonly Stmt stmt2;
 
         public Seq(Stmt s1, Stmt s2)
         {

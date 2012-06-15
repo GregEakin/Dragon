@@ -29,8 +29,8 @@ namespace Lexical
             reserve(new Word("while", Tag.WHILE));
             reserve(new Word("do", Tag.DO));
             reserve(new Word("break", Tag.BREAK));
-            reserve(Word.True);
-            reserve(Word.False);
+            reserve(Word.TRUE);
+            reserve(Word.FALSE);
             reserve(SType.Int);
             reserve(SType.Char);
             reserve(SType.Bool);
@@ -66,22 +66,22 @@ namespace Lexical
             switch (peek)
             {
                 case '&':
-                    if (ReadCh('&')) return Word.and;
+                    if (ReadCh('&')) return Word.AND;
                     else return new Token('&');
                 case '|':
-                    if (ReadCh('|')) return Word.or;
+                    if (ReadCh('|')) return Word.OR;
                     else return new Token('|');
                 case '=':
-                    if (ReadCh('=')) return Word.eq;
+                    if (ReadCh('=')) return Word.EQ;
                     else return new Token('=');
                 case '!':
-                    if (ReadCh('=')) return Word.ne;
+                    if (ReadCh('=')) return Word.NE;
                     else return new Token('!');
                 case '<':
-                    if (ReadCh('=')) return Word.le;
+                    if (ReadCh('=')) return Word.LE;
                     else return new Token('<');
                 case '>':
-                    if (ReadCh('=')) return Word.ge;
+                    if (ReadCh('=')) return Word.GE;
                     else return new Token('>');
             }
 

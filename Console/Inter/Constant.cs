@@ -23,14 +23,14 @@ namespace Inter
         { }
 
         public static readonly Constant
-            True = new Constant(Word.True, SType.Bool),
-            False = new Constant(Word.False, SType.Bool);
+            TRUE = new Constant(Word.TRUE, SType.Bool),
+            FALSE = new Constant(Word.FALSE, SType.Bool);
 
         public override void Jumping(int t, int f)
         {
-            if (this == True && t != 0)
+            if (this == TRUE && t != 0)
                 Emit("goto L" + t);
-            if (this == False && f != 0)
+            if (this == FALSE && f != 0)
                 Emit("goto L" + f);
         }
     }

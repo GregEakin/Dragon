@@ -17,8 +17,10 @@ namespace Inter
         int number;
 
         public Temp(SType p)
-            : base(Word.temp, p)
-        { number = ++count; }
+            : base(Word.TEMP, p)
+        {
+            number = ++count;
+        }
 
         public override string ToString()
         {

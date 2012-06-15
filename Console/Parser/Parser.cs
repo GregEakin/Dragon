@@ -280,7 +280,7 @@ namespace Parser
             if (look.tag == '-')
             {
                 move();
-                return new Unary(Word.minus, unary());
+                return new Unary(Word.MINUS, unary());
             }
             else if (look.tag == '!')
             {
@@ -310,11 +310,11 @@ namespace Parser
                     move();
                     return x;
                 case Tag.TRUE:
-                    x = Constant.True;
+                    x = Constant.TRUE;
                     move();
                     return x;
                 case Tag.FALSE:
-                    x = Constant.False;
+                    x = Constant.FALSE;
                     move();
                     return x;
                 case Tag.ID:
