@@ -12,17 +12,17 @@ namespace Lexical
     /// </summary>
     public class Num : Token
     {
-        public readonly int value;
+        public readonly int Value;
 
         public Num(int v)
             : base(Tag.NUM)
         {
-            value = v;
+            Value = v;
         }
 
         public override string ToString()
         {
-            return "" + value;
+            return Value.ToString();
         }
     }
 }

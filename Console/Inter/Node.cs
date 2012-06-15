@@ -21,7 +21,7 @@ namespace Inter
 
         public Node()
         {
-            lexline = Lexer.line;
+            lexline = Lexer.Line;
         }
 
         public void Error(string s)

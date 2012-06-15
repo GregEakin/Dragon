@@ -16,16 +16,11 @@ namespace Lexical
     /// </summary>
     public class Lexer
     {
-        public static int line = 1;
+        private readonly Dictionary<string, Word> words = new Dictionary<string, Word>();
 
-        char peek = ' ';
+        public static int Line = 1;
 
-        readonly Dictionary<string, Word> words = new Dictionary<string, Word>();
-
-        void reserve(Word w)
-        {
-            words.Add(w.lexeme, w);
-        }
+        private char peek = ' ';
 
         public Lexer()
         {
@@ -42,12 +37,12 @@ namespace Lexical
             reserve(SType.Float);
         }
 
-        void ReadCh()
+        private void ReadCh()
         {
             peek = (char)Console.Read();
         }
 
-        Boolean ReadCh(char c)
+        private Boolean ReadCh(char c)
         {
             ReadCh();
             if (peek != c)
@@ -63,7 +58,7 @@ namespace Lexical
                 if (peek == ' ' || peek == '\t' || peek == '\r')
                     continue;
                 else if (peek == '\n')
-                    line = line + 1;
+                    Line = Line + 1;
                 else
                     break;
             }
@@ -96,8 +91,10 @@ namespace Lexical
                 do
                 {
                     v = 10 * v + (int)char.GetNumericValue(peek); ReadCh();
-                } while (char.IsDigit(peek));
-                if (peek != '.') return new Num(v);
+                }
+                while (char.IsDigit(peek));
+                if (peek != '.')
+                    return new Num(v);
                 float x = v; float d = 10;
                 while (true)
                 {
@@ -129,6 +126,11 @@ namespace Lexical
             Token tok = new Token(peek);
             peek = ' ';
             return tok;
+        }
+
+        private void reserve(Word w)
+        {
+            words.Add(w.Lexeme, w);
         }
     }
 }

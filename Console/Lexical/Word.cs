@@ -12,17 +12,17 @@ namespace Lexical
     /// </summary>
     public class Word : Token
     {
-        public readonly string lexeme;
+        public readonly string Lexeme;
 
         public Word(string s, int tag)
             : base(tag)
         {
-            lexeme = s;
+            Lexeme = s;
         }
 
         public override string ToString()
         {
-            return lexeme;
+            return Lexeme;
         }
 
         public static readonly Word

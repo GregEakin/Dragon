@@ -21,7 +21,7 @@ namespace Lexical
         
         public override string ToString()
         {
-            return "" + (char)tag;
+            return ((char)tag).ToString();
         }
     }
 }

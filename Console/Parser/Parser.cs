@@ -27,24 +27,6 @@ namespace Parser
             move();
         }
 
-        private void move()
-        {
-            look = lex.Scan();
-        }
-
-        private void error(string s)
-        {
-            throw new Error("near line " + Lexer.line + ": " + s);
-        }
-
-        private void match(int t)
-        {
-            if (look.tag == t)
-                move();
-            else
-                error("syntax error");
-        }
-
         public void program()
         {
             Stmt s = block();
@@ -53,6 +35,24 @@ namespace Parser
             s.EmitLabel(begin);
             s.Gen(begin, after);
             s.EmitLabel(after);
+        }
+
+        private void move()
+        {
+            look = lex.Scan();
+        }
+
+        private void error(string s)
+        {
+            throw new Error("near line " + Lexer.Line + ": " + s);
+        }
+
+        private void match(int t)
+        {
+            if (look.tag == t)
+                move();
+            else
+                error("syntax error");
         }
 
         private Stmt block()
@@ -101,7 +101,7 @@ namespace Parser
             match(']');
             if (look.tag == '[')
                 p = dims(p);
-            return new Array(((Num)tok).value, p);
+            return new Array(((Num)tok).Value, p);
         }
 
         private Stmt stmts()

@@ -12,17 +12,17 @@ namespace Lexical
     /// </summary>
     public class Real : Token
     {
-        public readonly float value;
+        public readonly float Value;
 
         public Real(float v)
             : base(Tag.REAL)
         {
-            value = v;
+            Value = v;
         }
 
         public override string ToString()
         {
-            return "" + value;
+            return Value.ToString();
         }
     }
 }
