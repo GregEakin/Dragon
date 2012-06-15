@@ -42,6 +42,7 @@ namespace Inter
         {
             string s1 = index.Reduce().ToString();
             string s2 = expr.Reduce().ToString();
+            Emit(array.ToString() + " [ " + s1 + " ] = " + s2);
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Inter
                 Emit("goto L" + f);
             }
             else if (t != 0) Emit("if " + test + " goto L" + t);
-            else if (f != 0) Emit("iffalse " + test + "goto L" + f);
+            else if (f != 0) Emit("iffalse " + test + " goto L" + f);
         }
 
         public override string ToString()

@@ -13,6 +13,7 @@ namespace ConsoleX
             Parser parser = new Parser(lex);
             parser.program();
             Console.WriteLine();
+            Console.ReadLine();
         }
     }
 }
