@@ -22,7 +22,8 @@ namespace Inter
             int label = f != 0 ? f : NewLabel();
             expr1.Jumping(label, 0);
             expr2.Jumping(t, f);
-            if (f == 0) EmitLabel(label);
+            if (f == 0)
+                EmitLabel(label);
         }
     }
 }

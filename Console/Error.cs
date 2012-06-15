@@ -13,6 +13,8 @@ namespace ConsoleX
     /// </summary>
     public class Error : Exception
     {
-        public Error(string msg) : base(msg) { }
+        public Error(string msg)
+            : base(msg)
+        { }
     }
 }

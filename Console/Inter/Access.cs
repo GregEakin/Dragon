@@ -14,8 +14,8 @@ namespace Inter
     /// </summary>
     public class Access : Op
     {
-        readonly public Id array;
-        readonly public Expr index;
+        public readonly Id array;
+        public readonly Expr index;
 
         public Access(Id a, Expr i, SType p)
             : base(new Word("[]", Tag.INDEX), p)

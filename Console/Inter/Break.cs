@@ -6,7 +6,6 @@
 
 namespace Inter
 {
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

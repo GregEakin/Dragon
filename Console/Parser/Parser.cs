@@ -18,8 +18,8 @@ namespace Parser
     {
         private readonly Lexer lex;
         private Token look;
-        Env top;
-        int used;
+        private Env top;
+        private int used;
 
         public Parser(Lexer l)
         {
@@ -27,17 +27,17 @@ namespace Parser
             move();
         }
 
-        void move()
+        private void move()
         {
             look = lex.Scan();
         }
 
-        void error(string s)
+        private void error(string s)
         {
             throw new Error("near line " + Lexer.line + ": " + s);
         }
 
-        void match(int t)
+        private void match(int t)
         {
             if (look.tag == t)
                 move();
@@ -55,7 +55,7 @@ namespace Parser
             s.EmitLabel(after);
         }
 
-        Stmt block()
+        private Stmt block()
         {
             match('{');
             Env savedEnv = top;
@@ -67,7 +67,7 @@ namespace Parser
             return s;
         }
 
-        void decls()
+        private void decls()
         {
             while (look.tag == Tag.BASIC)
             {
@@ -83,7 +83,7 @@ namespace Parser
             }
         }
 
-        SType type()
+        private SType type()
         {
             SType p = (SType)look;
             match(Tag.BASIC);
@@ -93,7 +93,7 @@ namespace Parser
                 return dims(p);
         }
 
-        SType dims(SType p)
+        private SType dims(SType p)
         {
             match('[');
             Token tok = look;
@@ -104,7 +104,7 @@ namespace Parser
             return new Array(((Num)tok).value, p);
         }
 
-        Stmt stmts()
+        private Stmt stmts()
         {
             if (look.tag == '}')
                 return Stmt.Null;
@@ -112,7 +112,7 @@ namespace Parser
                 return new Seq(stmt(), stmts());
         }
 
-        Stmt stmt()
+        private Stmt stmt()
         {
             Expr x;
             Stmt s1, s2;
@@ -175,7 +175,7 @@ namespace Parser
             }
         }
 
-        Stmt assign()
+        private Stmt assign()
         {
             Stmt stmt;
             Token t = look;
@@ -198,7 +198,7 @@ namespace Parser
             return stmt;
         }
 
-        Expr boolx()
+        private Expr boolx()
         {
             Expr x = join();
             while (look.tag == Tag.OR)
@@ -210,7 +210,7 @@ namespace Parser
             return x;
         }
 
-        Expr join()
+        private Expr join()
         {
             Expr x = equality();
             while (look.tag == Tag.AND)
@@ -222,7 +222,7 @@ namespace Parser
             return x;
         }
 
-        Expr equality()
+        private Expr equality()
         {
             Expr x = rel();
             while (look.tag == Tag.EQ || look.tag == Tag.NE)
@@ -234,7 +234,7 @@ namespace Parser
             return x;
         }
 
-        Expr rel()
+        private Expr rel()
         {
             Expr x = expr();
             switch (look.tag)
@@ -251,7 +251,7 @@ namespace Parser
             }
         }
 
-        Expr expr()
+        private Expr expr()
         {
             Expr x = term();
             while (look.tag == '+' || look.tag == '-')
@@ -263,7 +263,7 @@ namespace Parser
             return x;
         }
 
-        Expr term()
+        private Expr term()
         {
             Expr x = unary();
             while (look.tag == '*' || look.tag == '/')
@@ -275,7 +275,7 @@ namespace Parser
             return x;
         }
 
-        Expr unary()
+        private Expr unary()
         {
             if (look.tag == '-')
             {
@@ -291,7 +291,7 @@ namespace Parser
             else return factor();
         }
 
-        Expr factor()
+        private Expr factor()
         {
             Expr x;
             switch (look.tag)
@@ -333,7 +333,7 @@ namespace Parser
             }
         }
 
-        Access offset(Id a)
+        private Access offset(Id a)
         {
             Expr loc = null;
             SType type = a.type;
