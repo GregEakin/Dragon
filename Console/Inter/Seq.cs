@@ -12,25 +12,27 @@ namespace Inter
     /// </summary>
     public class Seq : Stmt
     {
-        Stmt stmt1;
-        Stmt stmt2;
+        readonly Stmt stmt1;
+        readonly Stmt stmt2;
+
         public Seq(Stmt s1, Stmt s2)
         {
             stmt1 = s1;
             stmt2 = s2;
         }
-        public override void gen(int b, int a)
+
+        public override void Gen(int b, int a)
         {
             if (stmt1 == Stmt.Null)
-                stmt2.gen(b, a);
+                stmt2.Gen(b, a);
             else if (stmt2 == Stmt.Null)
-                stmt1.gen(b, a);
+                stmt1.Gen(b, a);
             else
             {
-                int label = newlabel();
-                stmt1.gen(b, label);
-                emitlabel(label);
-                stmt2.gen(label, a);
+                int label = NewLabel();
+                stmt1.Gen(b, label);
+                EmitLabel(label);
+                stmt2.Gen(label, a);
             }
         }
     }

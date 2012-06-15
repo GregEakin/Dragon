@@ -1,25 +1,18 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Id.cs" company="">
+// <copyright file="Error.cs" company="">
 // TODO: Update copyright text.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Inter
+namespace ConsoleX
 {
-    using Lexical;
-    using Symbols;
+    using System;
 
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public class Id : Expr
+    public class Error : Exception
     {
-        public readonly int offset;
-
-        public Id(Word id, SType p, int b) 
-            : base(id, p) 
-        { 
-            offset = b; 
-        }
+        public Error(string msg) : base(msg) { }
     }
 }

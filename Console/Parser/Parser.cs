@@ -6,6 +6,7 @@
 
 namespace Parser
 {
+    using ConsoleX;
     using Inter;
     using Lexical;
     using Symbols;
@@ -15,17 +16,27 @@ namespace Parser
     /// </summary>
     public class Parser
     {
-        private Lexer lex;
+        private readonly Lexer lex;
         private Token look;
         Env top;
         int used;
+
         public Parser(Lexer l)
         {
             lex = l;
             move();
         }
-        void move() { look = lex.scan(); }
-        void error(string s) { throw new Error("near line " + Lexer.line + ": " + s); }
+
+        void move()
+        {
+            look = lex.Scan();
+        }
+
+        void error(string s)
+        {
+            throw new Error("near line " + Lexer.line + ": " + s);
+        }
+
         void match(int t)
         {
             if (look.tag == t)
@@ -33,19 +44,35 @@ namespace Parser
             else
                 error("syntax error");
         }
+
         public void program()
         {
             Stmt s = block();
-            int begin = s.newlabel();
-            int after = s.newlabel();
-            s.emitlabel(begin);
-            s.gen(begin, after);
-            s.emitlabel(after);
+            int begin = s.NewLabel();
+            int after = s.NewLabel();
+            s.EmitLabel(begin);
+            s.Gen(begin, after);
+            s.EmitLabel(after);
         }
+
+        Stmt block()
+        {
+            match('{');
+            Env savedEnv = top;
+            top = new Env(top);
+            decls();
+            Stmt s = stmts();
+            match('}');
+            top = savedEnv;
+            return s;
+        }
+
         void decls()
         {
             while (look.tag == Tag.BASIC)
             {
+                var x = this.lex;
+
                 SType p = type();
                 Token tok = look;
                 match(Tag.ID);
@@ -55,6 +82,7 @@ namespace Parser
                 used = used + p.width;
             }
         }
+
         SType type()
         {
             SType p = (SType)look;
@@ -64,6 +92,7 @@ namespace Parser
             else
                 return dims(p);
         }
+
         SType dims(SType p)
         {
             match('[');
@@ -74,6 +103,7 @@ namespace Parser
                 p = dims(p);
             return new Array(((Num)tok).value, p);
         }
+
         Stmt stmts()
         {
             if (look.tag == '}')
@@ -81,16 +111,18 @@ namespace Parser
             else
                 return new Seq(stmt(), stmts());
         }
+
         Stmt stmt()
         {
             Expr x;
-            Stmt s, s1, s2;
+            Stmt s1, s2;
             Stmt savedStmt;
             switch (look.tag)
             {
                 case ';':
                     move();
                     return Stmt.Null;
+
                 case Tag.IF:
                     match(Tag.IF);
                     match('(');
@@ -102,6 +134,7 @@ namespace Parser
                     match(Tag.ELSE);
                     s2 = stmt();
                     return new Else(x, s1, s2);
+
                 case Tag.WHILE:
                     While whilenode = new While();
                     savedStmt = Stmt.Enclosing;
@@ -113,6 +146,7 @@ namespace Parser
                     s1 = stmt();
                     whilenode.init(x, s1);
                     return whilenode;
+
                 case Tag.DO:
                     Do donode = new Do();
                     savedStmt = Stmt.Enclosing;
@@ -124,19 +158,23 @@ namespace Parser
                     x = boolx();
                     match(')');
                     match(';');
-                    donode.init(s1, x);
+                    donode.init(x, s1);
                     Stmt.Enclosing = savedStmt;
                     return donode;
+
                 case Tag.BREAK:
                     match(Tag.BREAK);
                     match(';');
                     return new Break();
+
                 case '{':
                     return block();
+
                 default:
                     return assign();
             }
         }
+
         Stmt assign()
         {
             Stmt stmt;
@@ -183,6 +221,7 @@ namespace Parser
             }
             return x;
         }
+
         Expr equality()
         {
             Expr x = rel();
@@ -197,7 +236,7 @@ namespace Parser
 
         Expr rel()
         {
-            Expr x = rel();
+            Expr x = expr();
             switch (look.tag)
             {
                 case '<':
@@ -296,17 +335,14 @@ namespace Parser
 
         Access offset(Id a)
         {
-            Expr i;
-            Expr w;
-            Expr t1, t2;
-            Expr loc;
+            Expr loc = null;
             SType type = a.type;
             match('[');
-            i = boolx();
+            Expr i = boolx();
             match(']');
             type = ((Array)type).of;
-            w = new Constant(type.width);
-            t1 = new Arith(new Token('*'), i, w);
+            Expr w = new Constant(type.width);
+            Expr t1 = new Arith(new Token('*'), i, w);
             loc = t1;
             while (look.tag == '[')
             {
@@ -316,8 +352,7 @@ namespace Parser
                 type = ((Array)type).of;
                 w = new Constant(type.width);
                 t1 = new Arith(new Token('*'), i, w);
-                t2 = new Arith(new Token('+'), loc, t1);
-                loc = t2;
+                loc = new Arith(new Token('+'), loc, t1);
             }
             return new Access(a, loc, type);
         }

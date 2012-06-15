@@ -13,21 +13,23 @@ namespace Inter
     /// </summary>
     public class If : Stmt
     {
-        Expr expr;
-        Stmt stmt;
+        readonly Expr expr;
+        readonly Stmt stmt;
+
         public If(Expr x, Stmt s)
         {
             expr = x;
             stmt = s;
             if (expr.type != SType.Bool)
-                expr.error("boolean required in if");
+                expr.Error("boolean required in if");
         }
-        public override void gen(int b, int a)
+
+        public override void Gen(int b, int a)
         {
-            int label = newlabel();
-            expr.jumping(0, a);
-            emitlabel(label);
-            stmt.gen(label, a);
+            int label = NewLabel();
+            expr.Jumping(0, a);
+            EmitLabel(label);
+            stmt.Gen(label, a);
         }
     }
 }

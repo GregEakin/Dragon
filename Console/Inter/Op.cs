@@ -14,12 +14,15 @@ namespace Inter
     /// </summary>
     public class Op : Expr
     {
-        public Op(Token tok, SType p) : base(tok, p) { }
-        public override Expr reduce()
+        public Op(Token tok, SType p)
+            : base(tok, p)
+        { }
+
+        public override Expr Reduce()
         {
-            Expr x = gen();
+            Expr x = Gen();
             Temp t = new Temp(type);
-            emit(t.ToString() + " = " + x.ToString());
+            Emit(t.ToString() + " = " + x.ToString());
             return t;
         }
     }

@@ -12,16 +12,18 @@ namespace Inter
     /// </summary>
     public class Break : Stmt
     {
-        Stmt stmt;
+        readonly Stmt stmt;
+
         public Break()
         {
             if (Stmt.Enclosing == Stmt.Null)
-                error("unenclosed  break");
+                Error("unenclosed  break");
             stmt = Stmt.Enclosing;
         }
-        public override void gen(int b, int a)
+
+        public override void Gen(int b, int a)
         {
-            emit("goto L" + stmt.after);
+            Emit("goto L" + stmt.after);
         }
     }
 }

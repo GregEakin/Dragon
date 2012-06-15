@@ -14,15 +14,21 @@ namespace Inter
     /// </summary>
     public class Access : Op
     {
-        public Id array;
-        public Expr index;
+        readonly public Id array;
+        readonly public Expr index;
+
         public Access(Id a, Expr i, SType p)
             : base(new Word("[]", Tag.INDEX), p)
         {
             array = a;
             index = i;
         }
-        public override Expr gen() { return new Access(array, index.reduce(), type); }
+
+        public override Expr Gen()
+        {
+            return new Access(array, index.Reduce(), type);
+        }
+
         public override string ToString()
         {
             return array.ToString() + " [ " + index.ToString() + " ]";

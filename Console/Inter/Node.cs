@@ -7,6 +7,7 @@
 namespace Inter
 {
     using System;
+    using ConsoleX;
     using Lexical;
 
     /// <summary>
@@ -14,12 +15,33 @@ namespace Inter
     /// </summary>
     public class Node
     {
-        int lexline = 0;
-        public Node() { lexline = Lexer.line; }
-        public void error(string s) { throw new Error("near line " + lexline + ": " + s); }
-        static int labels = 0;
-        public int newlabel() { return ++labels; }
-        public void emitlabel(int i) { Console.Write("L" + i + ":"); }
-        public void emit(string s) { Console.Write("\t" + s); }
+        static int labels;
+
+        readonly int lexline;
+
+        public Node()
+        {
+            lexline = Lexer.line;
+        }
+
+        public void Error(string s)
+        {
+            throw new Error("near line " + lexline + ": " + s);
+        }
+
+        public int NewLabel()
+        {
+            return ++labels;
+        }
+
+        public void EmitLabel(int i)
+        {
+            Console.Write("L" + i + ":");
+        }
+
+        public void Emit(string s)
+        {
+            Console.Write("\t" + s);
+        }
     }
 }

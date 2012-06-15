@@ -13,14 +13,17 @@ namespace Symbols
     /// </summary>
     public class Array : SType
     {
-        public SType of;
-        public int size = 1;
+        public readonly SType of;
+        
+        public readonly int size;
+
         public Array(int sz, SType p)
             : base("[]", Tag.INDEX, sz * p.width)
         {
             size = sz;
             of = p;
         }
+
         public override string ToString()
         {
             return "[" + size + "] " + of.ToString();

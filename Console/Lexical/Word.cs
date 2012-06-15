@@ -12,12 +12,19 @@ namespace Lexical
     /// </summary>
     public class Word : Token
     {
-        public string lexeme = "";
-        public Word(string s, int tag) : base(tag) { lexeme = s; }
+        public readonly string lexeme;
+
+        public Word(string s, int tag)
+            : base(tag)
+        {
+            lexeme = s;
+        }
+
         public override string ToString()
         {
             return lexeme;
         }
+
         public static readonly Word
             and = new Word("&&", Tag.AND),
             or = new Word("||", Tag.OR),

@@ -14,33 +14,39 @@ namespace Inter
     /// </summary>
     public class Logical : Expr
     {
-        public Expr expr1, expr2;
+        public readonly Expr expr1;
+        public readonly Expr expr2;
+
         public Logical(Token tok, Expr x1, Expr x2)
             : base(tok, null)
         {
-            expr1 = x1; expr2 = x2;
-            type = check(expr1.type, expr2.type);
+            expr1 = x1;
+            expr2 = x2;
+            type = Check(expr1.type, expr2.type);
             if (type == null)
-                error("type error");
+                Error("type error");
         }
-        public virtual SType check(SType p1, SType p2)
+
+        public virtual SType Check(SType p1, SType p2)
         {
             if (p1 == SType.Bool && p2 == SType.Bool) return SType.Bool;
             else return null;
         }
-        public override Expr gen()
+
+        public override Expr Gen()
         {
-            int f = newlabel();
-            int a = newlabel();
+            int f = NewLabel();
+            int a = NewLabel();
             Temp temp = new Temp(type);
-            jumping(0, f);
-            emit(temp.ToString() + " = true");
-            emit("goto L" + a);
-            emitlabel(f);
-            emit(temp.ToString() + " = false");
-            emitlabel(a);
+            Jumping(0, f);
+            Emit(temp.ToString() + " = true");
+            Emit("goto L" + a);
+            EmitLabel(f);
+            Emit(temp.ToString() + " = false");
+            EmitLabel(a);
             return temp;
         }
+
         public override string ToString()
         {
             return expr1.ToString() + " " + op.ToString() + " " + expr2.ToString();

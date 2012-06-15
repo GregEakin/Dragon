@@ -17,9 +17,16 @@ namespace Lexical
     public class Lexer
     {
         public static int line = 1;
+
         char peek = ' ';
-        Dictionary<string, Word> words = new Dictionary<string, Word>();
-        void reserve(Word w) { words.Add(w.lexeme, w); }
+
+        readonly Dictionary<string, Word> words = new Dictionary<string, Word>();
+
+        void reserve(Word w)
+        {
+            words.Add(w.lexeme, w);
+        }
+
         public Lexer()
         {
             reserve(new Word("if", Tag.IF));
@@ -34,81 +41,91 @@ namespace Lexical
             reserve(SType.Bool);
             reserve(SType.Float);
         }
-        void readch() { peek = (char)Console.Read(); }
-        Boolean readch(char c)
+
+        void ReadCh()
         {
-            readch();
+            peek = (char)Console.Read();
+        }
+
+        Boolean ReadCh(char c)
+        {
+            ReadCh();
             if (peek != c)
                 return false;
             peek = ' ';
             return true;
         }
-        public Token scan()
+
+        public Token Scan()
         {
-            while (true)
+            for (; ; ReadCh())
             {
-                readch();
-                if (peek == ' ' || peek == '\t')
+                if (peek == ' ' || peek == '\t' || peek == '\r')
                     continue;
                 else if (peek == '\n')
                     line = line + 1;
                 else
                     break;
             }
+
             switch (peek)
             {
                 case '&':
-                    if (readch('&')) return Word.and;
+                    if (ReadCh('&')) return Word.and;
                     else return new Token('&');
                 case '|':
-                    if (readch('|')) return Word.or;
+                    if (ReadCh('|')) return Word.or;
                     else return new Token('|');
                 case '=':
-                    if (readch('=')) return Word.eq;
+                    if (ReadCh('=')) return Word.eq;
                     else return new Token('=');
                 case '!':
-                    if (readch('=')) return Word.ne;
+                    if (ReadCh('=')) return Word.ne;
                     else return new Token('!');
                 case '<':
-                    if (readch('=')) return Word.le;
+                    if (ReadCh('=')) return Word.le;
                     else return new Token('<');
                 case '>':
-                    if (readch('&')) return Word.ge;
+                    if (ReadCh('=')) return Word.ge;
                     else return new Token('>');
             }
+
             if (char.IsDigit(peek))
             {
                 int v = 0;
                 do
                 {
-                    v = 10 * v + int.Parse(peek); readch();
+                    v = 10 * v + (int)char.GetNumericValue(peek); ReadCh();
                 } while (char.IsDigit(peek));
                 if (peek != '.') return new Num(v);
                 float x = v; float d = 10;
                 while (true)
                 {
-                    readch();
+                    ReadCh();
                     if (!char.IsDigit(peek))
                         break;
-                    x = x + int.Parse(peek) / d; d = d * 10;
+                    x = x + (int)char.GetNumericValue(peek) / d; d = d * 10;
                 }
                 return new Real(x);
             }
+
             if (char.IsLetter(peek))
             {
                 StringBuilder b = new StringBuilder();
                 do
                 {
                     b.Append(peek);
-                    readch();
-                } while (char.IsLetterOrDigit(peek));
+                    ReadCh();
+                }
+                while (char.IsLetterOrDigit(peek));
                 string s = b.ToString();
-                Word w = (Word)words[s];
-                if (w != null) return w;
-                w = new Word(s, Tag.ID);
+                if (words.ContainsKey(s))
+                    return words[s];
+                Word w = new Word(s, Tag.ID);
                 words.Add(s, w);
                 return w;
             }
+
             Token tok = new Token(peek);
             peek = ' ';
             return tok;

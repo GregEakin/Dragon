@@ -13,25 +13,28 @@ namespace Inter
     /// </summary>
     public class Do : Stmt
     {
-        Expr expr = null;
-        Stmt stmt = null;
+        Expr expr;
+        Stmt stmt;
+
         public Do()
         {
         }
-        public void init(Stmt s, Expr x)
+
+        public void init(Expr x, Stmt s)
         {
             expr = x;
             stmt = s;
             if (expr.type != SType.Bool)
-                expr.error("boolean required in while");
+                expr.Error("boolean required in while");
         }
-        public override void gen(int b, int a)
+
+        public override void Gen(int b, int a)
         {
             after = a;
-            int label = newlabel();
-            stmt.gen(b, label);
-            emitlabel(label);
-            expr.jumping(b, 0);
+            int label = NewLabel();
+            stmt.Gen(b, label);
+            EmitLabel(label);
+            expr.Jumping(b, 0);
         }
     }
 }

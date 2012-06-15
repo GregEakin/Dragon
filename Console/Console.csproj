@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Error.cs" />
     <Compile Include="Inter\Access.cs" />
     <Compile Include="Inter\And.cs" />
     <Compile Include="Inter\Arith.cs" />
@@ -80,6 +81,9 @@
     <Compile Include="Symbols\Array.cs" />
     <Compile Include="Symbols\Env.cs" />
     <Compile Include="Symbols\SType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="test.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

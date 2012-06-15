@@ -13,18 +13,20 @@ namespace Inter
     /// </summary>
     public class SetElem : Stmt
     {
-        public Id array;
-        public Expr index;
-        public Expr expr;
+        public readonly Id array;
+        public readonly Expr index;
+        public readonly Expr expr;
+        
         public SetElem(Access x, Expr y)
         {
             array = x.array;
             index = x.index;
             expr = y;
-            if (check(x.type, expr.type) == null)
-                error("type error");
+            if (Check(x.type, expr.type) == null)
+                Error("type error");
         }
-        public SType check(SType p1, SType p2)
+        
+        public SType Check(SType p1, SType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;
@@ -35,10 +37,11 @@ namespace Inter
             else
                 return null;
         }
-        public override void gen(int b, int a)
+
+        public override void Gen(int b, int a)
         {
-            string s1 = index.reduce().ToString();
-            string s2 = expr.reduce().ToString();
+            string s1 = index.Reduce().ToString();
+            string s2 = expr.Reduce().ToString();
         }
     }
 }

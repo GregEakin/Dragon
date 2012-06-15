@@ -14,19 +14,19 @@ namespace Inter
     /// </summary>
     public class Unary : Op
     {
-        public Expr expr;
+        public readonly Expr expr;
 
         public Unary(Token tok, Expr x)
             : base(tok, null)
         {
             type = SType.max(SType.Int, expr.type);
             if (type == null)
-                error("type error");
+                Error("type error");
         }
 
-        public override Expr gen()
+        public override Expr Gen()
         {
-            return new Unary(op, expr.reduce());
+            return new Unary(op, expr.Reduce());
         }
 
         public override string ToString()
