@@ -265,8 +265,20 @@ namespace Parser
 
         private Expr multExpr()
         {
-            Expr x = unaryExpr();
+            Expr x = exponentExpr();
             while (look.tag == '*' || look.tag == '/')
+            {
+                Token tok = look;
+                move();
+                x = new Arith(tok, x, unaryExpr());
+            }
+            return x;
+        }
+
+        private Expr exponentExpr()
+        {
+            Expr x = unaryExpr();
+            while (look.tag == '^')
             {
                 Token tok = look;
                 move();

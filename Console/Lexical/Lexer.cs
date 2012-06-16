@@ -51,6 +51,14 @@ namespace Lexical
             return true;
         }
 
+        private Boolean ReadChAgain(char c)
+        {
+            if (peek != c)
+                return false;
+            peek = ' ';
+            return true;
+        }
+
         public Token Scan()
         {
             for (; ; ReadCh())
@@ -74,11 +82,9 @@ namespace Lexical
                 case '=':
                     if (ReadCh('=')) return Word.EQ;
                     else return new Token('=');
-                case '!':
-                    if (ReadCh('=')) return Word.NE;
-                    else return new Token('!');
                 case '<':
                     if (ReadCh('=')) return Word.LE;
+                    if (ReadChAgain('>')) return Word.NE;
                     else return new Token('<');
                 case '>':
                     if (ReadCh('=')) return Word.GE;

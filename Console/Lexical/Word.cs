@@ -29,7 +29,7 @@ namespace Lexical
             AND = new Word("&&", Tag.AND),
             OR = new Word("||", Tag.OR),
             EQ = new Word("==", Tag.EQ),
-            NE = new Word("!=", Tag.NE),
+            NE = new Word("<>", Tag.NE),
             LE = new Word("<=", Tag.LE),
             GE = new Word(">=", Tag.GE),
             MINUS = new Word("minus", Tag.MINUS),
