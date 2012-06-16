@@ -6,7 +6,6 @@
 
 namespace Lexical
 {
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

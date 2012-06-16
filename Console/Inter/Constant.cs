@@ -22,6 +22,10 @@ namespace Inter
             : base(new Num(i), VarType.INT)
         { }
 
+        public Constant(double d)
+            : base(new Real(d), VarType.FLOAT)
+        { }
+
         public static readonly Constant
             TRUE = new Constant(Word.TRUE, VarType.BOOL),
             FALSE = new Constant(Word.FALSE, VarType.BOOL);

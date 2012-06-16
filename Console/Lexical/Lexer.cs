@@ -29,6 +29,9 @@ namespace Lexical
             reserve(new Word("while", Tag.WHILE));
             reserve(new Word("do", Tag.DO));
             reserve(new Word("break", Tag.BREAK));
+            reserve(new Word("and", Tag.AND));
+            reserve(new Word("or", Tag.OR));
+            reserve(new Word("not", Tag.NOT));
             reserve(Word.TRUE);
             reserve(Word.FALSE);
             reserve(VarType.INT);
@@ -73,18 +76,12 @@ namespace Lexical
 
             switch (peek)
             {
-                case '&':
-                    if (ReadCh('&')) return Word.AND;
-                    else return new Token('&');
-                case '|':
-                    if (ReadCh('|')) return Word.OR;
-                    else return new Token('|');
                 case '=':
                     if (ReadCh('=')) return Word.EQ;
                     else return new Token('=');
                 case '<':
-                    if (ReadCh('=')) return Word.LE;
-                    if (ReadChAgain('>')) return Word.NE;
+                    if (ReadCh('>')) return Word.NE;
+                    if (ReadChAgain('=')) return Word.LE;
                     else return new Token('<');
                 case '>':
                     if (ReadCh('=')) return Word.GE;
@@ -101,13 +98,13 @@ namespace Lexical
                 while (char.IsDigit(peek));
                 if (peek != '.')
                     return new Num(v);
-                float x = v; float d = 10;
+                double x = v; double d = 10.0;
                 while (true)
                 {
                     ReadCh();
                     if (!char.IsDigit(peek))
                         break;
-                    x = x + (int)char.GetNumericValue(peek) / d; d = d * 10;
+                    x = x + (int)char.GetNumericValue(peek) / d; d = d * 10.0;
                 }
                 return new Real(x);
             }

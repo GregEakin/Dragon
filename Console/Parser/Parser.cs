@@ -289,12 +289,17 @@ namespace Parser
 
         private Expr unaryExpr()
         {
+            if (look.tag == '+')
+            {
+                move();
+                return unaryExpr();
+            }
             if (look.tag == '-')
             {
                 move();
                 return new Unary(Word.MINUS, unaryExpr());
             }
-            else if (look.tag == '!')
+            else if (look.tag == Tag.NOT)
             {
                 Token tok = look;
                 move();
