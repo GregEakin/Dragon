@@ -98,13 +98,13 @@ namespace Lexical
                 while (char.IsDigit(peek));
                 if (peek != '.')
                     return new Num(v);
-                double x = v; double d = 10.0;
+                float x = v; float d = 10.0f;
                 while (true)
                 {
                     ReadCh();
                     if (!char.IsDigit(peek))
                         break;
-                    x = x + (int)char.GetNumericValue(peek) / d; d = d * 10.0;
+                    x = x + (int)char.GetNumericValue(peek) / d; d = d * 10.0f;
                 }
                 return new Real(x);
             }

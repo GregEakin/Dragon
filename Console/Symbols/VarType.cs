@@ -22,8 +22,8 @@ namespace Symbols
         }
 
         public static readonly VarType
-            FLOAT = new VarType("float64", Tag.BASIC, 8),
-            INT = new VarType("int32", Tag.BASIC, 4),
+            FLOAT = new VarType("float", Tag.BASIC, 8),
+            INT = new VarType("int", Tag.BASIC, 4),
             CHAR = new VarType("char", Tag.BASIC, 2),
             BOOL = new VarType("bool", Tag.BASIC, 1);
 

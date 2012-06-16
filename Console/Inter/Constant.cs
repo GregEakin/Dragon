@@ -22,7 +22,7 @@ namespace Inter
             : base(new Num(i), VarType.INT)
         { }
 
-        public Constant(double d)
+        public Constant(float d)
             : base(new Real(d), VarType.FLOAT)
         { }
 

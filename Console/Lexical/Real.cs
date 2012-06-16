@@ -12,9 +12,9 @@ namespace Lexical
     /// </summary>
     public class Real : Token
     {
-        public readonly double Value;
+        public readonly float Value;
 
-        public Real(double v)
+        public Real(float v)
             : base(Tag.REAL)
         {
             Value = v;
