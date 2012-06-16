@@ -31,10 +31,10 @@ namespace Lexical
             reserve(new Word("break", Tag.BREAK));
             reserve(Word.TRUE);
             reserve(Word.FALSE);
-            reserve(SType.Int);
-            reserve(SType.Char);
-            reserve(SType.Bool);
-            reserve(SType.Float);
+            reserve(VarType.INT);
+            reserve(VarType.CHAR);
+            reserve(VarType.BOOL);
+            reserve(VarType.FLOAT);
         }
 
         private void ReadCh()

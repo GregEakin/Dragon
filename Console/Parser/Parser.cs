@@ -73,7 +73,7 @@ namespace Parser
             {
                 var x = this.lex;
 
-                SType p = type();
+                VarType p = type();
                 Token tok = look;
                 match(Tag.ID);
                 match(';');
@@ -83,9 +83,9 @@ namespace Parser
             }
         }
 
-        private SType type()
+        private VarType type()
         {
-            SType p = (SType)look;
+            VarType p = (VarType)look;
             match(Tag.BASIC);
             if (look.tag != '[')
                 return p;
@@ -93,7 +93,7 @@ namespace Parser
                 return dims(p);
         }
 
-        private SType dims(SType p)
+        private VarType dims(VarType p)
         {
             match('[');
             Token tok = look;
@@ -126,7 +126,7 @@ namespace Parser
                 case Tag.IF:
                     match(Tag.IF);
                     match('(');
-                    x = boolx();
+                    x = boolExpr();
                     match(')');
                     s1 = stmt();
                     if (look.tag != Tag.ELSE)
@@ -141,7 +141,7 @@ namespace Parser
                     Stmt.Enclosing = whilenode;
                     match(Tag.WHILE);
                     match('(');
-                    x = boolx();
+                    x = boolExpr();
                     match(')');
                     s1 = stmt();
                     whilenode.init(x, s1);
@@ -155,7 +155,7 @@ namespace Parser
                     s1 = stmt();
                     match(Tag.WHILE);
                     match('(');
-                    x = boolx();
+                    x = boolExpr();
                     match(')');
                     match(';');
                     donode.init(x, s1);
@@ -171,11 +171,11 @@ namespace Parser
                     return block();
 
                 default:
-                    return assign();
+                    return assignStmt();
             }
         }
 
-        private Stmt assign()
+        private Stmt assignStmt()
         {
             Stmt stmt;
             Token t = look;
@@ -186,57 +186,57 @@ namespace Parser
             if (look.tag == '=')
             {
                 move();
-                stmt = new Set(id, boolx());
+                stmt = new Set(id, boolExpr());
             }
             else
             {
                 Access x = offset(id);
                 match('=');
-                stmt = new SetElem(x, boolx());
+                stmt = new SetElem(x, boolExpr());
             }
             match(';');
             return stmt;
         }
 
-        private Expr boolx()
+        private Expr boolExpr()
         {
-            Expr x = join();
+            Expr x = joinExpr();
             while (look.tag == Tag.OR)
             {
                 Token tok = look;
                 move();
-                x = new Or(tok, x, join());
+                x = new Or(tok, x, joinExpr());
             }
             return x;
         }
 
-        private Expr join()
+        private Expr joinExpr()
         {
-            Expr x = equality();
+            Expr x = equalityExpr();
             while (look.tag == Tag.AND)
             {
                 Token tok = look;
                 move();
-                x = new And(tok, x, equality());
+                x = new And(tok, x, equalityExpr());
             }
             return x;
         }
 
-        private Expr equality()
+        private Expr equalityExpr()
         {
-            Expr x = rel();
+            Expr x = relExpr();
             while (look.tag == Tag.EQ || look.tag == Tag.NE)
             {
                 Token tok = look;
                 move();
-                x = new Rel(tok, x, rel());
+                x = new Rel(tok, x, relExpr());
             }
             return x;
         }
 
-        private Expr rel()
+        private Expr relExpr()
         {
-            Expr x = expr();
+            Expr x = addExpr();
             switch (look.tag)
             {
                 case '<':
@@ -245,68 +245,68 @@ namespace Parser
                 case '>':
                     Token tok = look;
                     move();
-                    return new Rel(tok, x, expr());
+                    return new Rel(tok, x, addExpr());
                 default:
                     return x;
             }
         }
 
-        private Expr expr()
+        private Expr addExpr()
         {
-            Expr x = term();
+            Expr x = multExpr();
             while (look.tag == '+' || look.tag == '-')
             {
                 Token tok = look;
                 move();
-                x = new Arith(tok, x, term());
+                x = new Arith(tok, x, multExpr());
             }
             return x;
         }
 
-        private Expr term()
+        private Expr multExpr()
         {
-            Expr x = unary();
+            Expr x = unaryExpr();
             while (look.tag == '*' || look.tag == '/')
             {
                 Token tok = look;
                 move();
-                x = new Arith(tok, x, unary());
+                x = new Arith(tok, x, unaryExpr());
             }
             return x;
         }
 
-        private Expr unary()
+        private Expr unaryExpr()
         {
             if (look.tag == '-')
             {
                 move();
-                return new Unary(Word.MINUS, unary());
+                return new Unary(Word.MINUS, unaryExpr());
             }
             else if (look.tag == '!')
             {
                 Token tok = look;
                 move();
-                return new Not(tok, unary());
+                return new Not(tok, unaryExpr());
             }
-            else return factor();
+            else return factorExpr();
         }
 
-        private Expr factor()
+        private Expr factorExpr()
         {
             Expr x;
             switch (look.tag)
             {
                 case '(':
                     move();
-                    x = boolx();
+                    x = boolExpr();
                     match(')');
                     return x;
                 case Tag.NUM:
-                    x = new Constant(look, SType.Int);
+                    x = new Constant(look, VarType.INT);
                     move();
                     return x;
                 case Tag.REAL:
-                    x = new Constant(look, SType.Float);
+                    x = new Constant(look, VarType.FLOAT);
                     move();
                     return x;
                 case Tag.TRUE:
@@ -336,9 +336,9 @@ namespace Parser
         private Access offset(Id a)
         {
             Expr loc = null;
-            SType type = a.type;
+            VarType type = a.type;
             match('[');
-            Expr i = boolx();
+            Expr i = boolExpr();
             match(']');
             type = ((Array)type).of;
             Expr w = new Constant(type.width);
@@ -347,7 +347,7 @@ namespace Parser
             while (look.tag == '[')
             {
                 match('[');
-                i = boolx();
+                i = boolExpr();
                 match(']');
                 type = ((Array)type).of;
                 w = new Constant(type.width);

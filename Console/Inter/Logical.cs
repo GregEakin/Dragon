@@ -27,10 +27,10 @@ namespace Inter
                 Error("type error");
         }
 
-        public virtual SType Check(SType p1, SType p2)
+        public virtual VarType Check(VarType p1, VarType p2)
         {
-            if (p1 == SType.Bool && p2 == SType.Bool)
-                return SType.Bool;
+            if (p1 == VarType.BOOL && p2 == VarType.BOOL)
+                return VarType.BOOL;
             else
                 return null;
         }

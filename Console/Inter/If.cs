@@ -20,7 +20,7 @@ namespace Inter
         {
             expr = x;
             stmt = s;
-            if (expr.type != SType.Bool)
+            if (expr.type != VarType.BOOL)
                 expr.Error("boolean required in if");
         }
 

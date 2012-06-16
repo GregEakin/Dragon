@@ -11,13 +11,13 @@ namespace Symbols
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public class Array : SType
+    public class Array : VarType
     {
-        public readonly SType of;
+        public readonly VarType of;
         
         public readonly int size;
 
-        public Array(int sz, SType p)
+        public Array(int sz, VarType p)
             : base("[]", Tag.INDEX, sz * p.width)
         {
             size = sz;

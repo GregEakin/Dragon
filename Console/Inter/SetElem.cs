@@ -26,13 +26,13 @@ namespace Inter
                 Error("type error");
         }
         
-        public SType Check(SType p1, SType p2)
+        public VarType Check(VarType p1, VarType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;
             else if (p1 == p2)
                 return p2;
-            else if (SType.numeric(p1) && SType.numeric(p2))
+            else if (VarType.numeric(p1) && VarType.numeric(p2))
                 return p2;
             else
                 return null;

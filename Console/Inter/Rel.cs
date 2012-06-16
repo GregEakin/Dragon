@@ -18,12 +18,12 @@ namespace Inter
             : base(tok, x1, x2)
         { }
 
-        public override SType Check(Symbols.SType p1, Symbols.SType p2)
+        public override VarType Check(Symbols.VarType p1, Symbols.VarType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;
             else if (p1 == p2)
-                return SType.Bool;
+                return VarType.BOOL;
             else return null;
         }
 

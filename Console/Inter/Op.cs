@@ -14,7 +14,7 @@ namespace Inter
     /// </summary>
     public class Op : Expr
     {
-        public Op(Token tok, SType p)
+        public Op(Token tok, VarType p)
             : base(tok, p)
         { }
 

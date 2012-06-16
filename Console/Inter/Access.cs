@@ -17,7 +17,7 @@ namespace Inter
         public readonly Id array;
         public readonly Expr index;
 
-        public Access(Id a, Expr i, SType p)
+        public Access(Id a, Expr i, VarType p)
             : base(new Word("[]", Tag.INDEX), p)
         {
             array = a;

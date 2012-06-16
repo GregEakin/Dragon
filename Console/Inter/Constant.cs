@@ -14,17 +14,17 @@ namespace Inter
     /// </summary>
     public class Constant : Expr
     {
-        public Constant(Token tok, SType p)
+        public Constant(Token tok, VarType p)
             : base(tok, p)
         { }
 
         public Constant(int i)
-            : base(new Num(i), SType.Int)
+            : base(new Num(i), VarType.INT)
         { }
 
         public static readonly Constant
-            TRUE = new Constant(Word.TRUE, SType.Bool),
-            FALSE = new Constant(Word.FALSE, SType.Bool);
+            TRUE = new Constant(Word.TRUE, VarType.BOOL),
+            FALSE = new Constant(Word.FALSE, VarType.BOOL);
 
         public override void Jumping(int t, int f)
         {

@@ -15,9 +15,9 @@ namespace Inter
     public class Expr : Node
     {
         public readonly Token op;
-        public SType type;
+        public VarType type;
 
-        public Expr(Token tok, SType p)
+        public Expr(Token tok, VarType p)
         {
             op = tok;
             type = p;

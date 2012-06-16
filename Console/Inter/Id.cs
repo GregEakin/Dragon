@@ -16,7 +16,7 @@ namespace Inter
     {
         public readonly int offset;
 
-        public Id(Word id, SType p, int b) 
+        public Id(Word id, VarType p, int b) 
             : base(id, p) 
         { 
             offset = b; 

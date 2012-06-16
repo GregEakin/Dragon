@@ -80,7 +80,7 @@
     <Compile Include="Inter\SetElem.cs" />
     <Compile Include="Symbols\Array.cs" />
     <Compile Include="Symbols\Env.cs" />
-    <Compile Include="Symbols\SType.cs" />
+    <Compile Include="Symbols\VarType.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="test.txt" />

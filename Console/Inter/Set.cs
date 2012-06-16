@@ -24,11 +24,11 @@ namespace Inter
                 Error("type error");
         }
 
-        public SType Check(SType p1, SType p2)
+        public VarType Check(VarType p1, VarType p2)
         {
-            if (SType.numeric(p1) && SType.numeric(p2))
+            if (VarType.numeric(p1) && VarType.numeric(p2))
                 return p2;
-            else if (p1 == SType.Bool && p2 == SType.Bool)
+            else if (p1 == VarType.BOOL && p2 == VarType.BOOL)
                 return p2;
             else
                 return null;

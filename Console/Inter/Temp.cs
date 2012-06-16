@@ -16,7 +16,7 @@ namespace Inter
         static int count;
         int number;
 
-        public Temp(SType p)
+        public Temp(VarType p)
             : base(Word.TEMP, p)
         {
             number = ++count;

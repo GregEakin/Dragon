@@ -19,7 +19,8 @@ namespace Inter
         public Unary(Token tok, Expr x)
             : base(tok, null)
         {
-            type = SType.max(SType.Int, expr.type);
+            expr = x;
+            type = VarType.max(VarType.INT, expr.type);
             if (type == null)
                 Error("type error");
         }
