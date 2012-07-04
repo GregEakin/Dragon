@@ -145,6 +145,7 @@ namespace Parser
                     match(')');
                     s1 = stmt();
                     whilenode.init(x, s1);
+                    Stmt.Enclosing = savedStmt;
                     return whilenode;
 
                 case Tag.DO:
@@ -182,7 +183,7 @@ namespace Parser
             match(Tag.ID);
             Id id = top.get(t);
             if (id == null)
-                error(t.ToString() + " undeclared");
+                error(t + " undeclared");
             if (look.tag == '=')
             {
                 move();
@@ -338,7 +339,7 @@ namespace Parser
                     string a = look.ToString();
                     Id id = top.get(look);
                     if (id == null)
-                        error(look.ToString() + " undeclared");
+                        error(look + " undeclared");
                     move();
                     if (look.tag != '[')
                         return id;

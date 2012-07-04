@@ -14,7 +14,7 @@ namespace Inter
     public class Temp : Expr
     {
         static int count;
-        int number;
+        readonly int number;
 
         public Temp(VarType p)
             : base(Word.TEMP, p)

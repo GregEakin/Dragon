@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Globalization;
+
 namespace Lexical
 {
 
@@ -21,7 +23,7 @@ namespace Lexical
         
         public override string ToString()
         {
-            return ((char)tag).ToString();
+            return ((char)tag).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

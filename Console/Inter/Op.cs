@@ -22,7 +22,7 @@ namespace Inter
         {
             Expr x = Gen();
             Temp t = new Temp(type);
-            Emit(t.ToString() + " = " + x.ToString());
+            Emit(t + " = " + x);
             return t;
         }
     }

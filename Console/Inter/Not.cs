@@ -24,7 +24,7 @@ namespace Inter
 
         public override string ToString()
         {
-            return op.ToString() + " " + expr2.ToString();
+            return op + " " + expr2;
         }
     }
 }

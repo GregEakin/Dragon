@@ -41,17 +41,17 @@ namespace Inter
             int a = NewLabel();
             Temp temp = new Temp(type);
             Jumping(0, f);
-            Emit(temp.ToString() + " = true");
+            Emit(temp + " = true");
             Emit("goto L" + a);
             EmitLabel(f);
-            Emit(temp.ToString() + " = false");
+            Emit(temp + " = false");
             EmitLabel(a);
             return temp;
         }
 
         public override string ToString()
         {
-            return expr1.ToString() + " " + op.ToString() + " " + expr2.ToString();
+            return expr1 + " " + op + " " + expr2;
         }
     }
 }

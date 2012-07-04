@@ -18,7 +18,7 @@ namespace Inter
             : base(tok, x1, x2)
         { }
 
-        public override VarType Check(Symbols.VarType p1, Symbols.VarType p2)
+        public override VarType Check(VarType p1, VarType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;
@@ -31,7 +31,7 @@ namespace Inter
         {
             Expr a = expr1.Reduce();
             Expr b = expr2.Reduce();
-            string test = a.ToString() + " " + op.ToString() + " " + b.ToString();
+            string test = a + " " + op + " " + b;
             EmitJumps(test, t, f);
         }
     }

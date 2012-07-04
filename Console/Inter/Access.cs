@@ -31,7 +31,7 @@ namespace Inter
 
         public override string ToString()
         {
-            return array.ToString() + " [ " + index.ToString() + " ]";
+            return array + " [ " + index + " ]";
         }
     }
 }

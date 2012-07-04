@@ -26,7 +26,7 @@ namespace Symbols
 
         public override string ToString()
         {
-            return "[" + size + "] " + of.ToString();
+            return "[" + size + "] " + of;
         }
     }
 }

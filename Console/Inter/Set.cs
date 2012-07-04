@@ -36,7 +36,7 @@ namespace Inter
 
         public override void Gen(int b, int a)
         {
-            Emit(id.ToString() + " = " + expr.Gen().ToString());
+            Emit(id + " = " + expr.Gen());
         }
     }
 }

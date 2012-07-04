@@ -14,8 +14,8 @@ namespace ConsoleX
     {
         static void Main(string[] args)
         {
-            Lexer lex = new Lexer();
-            Parser parser = new Parser(lex);
+            var lex = new Lexer();
+            var parser = new Parser(lex);
             parser.program();
             Console.WriteLine();
             Console.ReadLine();

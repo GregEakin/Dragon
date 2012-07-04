@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Lexical;
+using Symbols;
+
 namespace Inter
 {
-    using Lexical;
-    using Symbols;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -32,7 +32,7 @@ namespace Inter
 
         public override string ToString()
         {
-            return op.ToString() + " " + expr.ToString();
+            return op + " " + expr;
         }
     }
 }
