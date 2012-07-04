@@ -24,7 +24,7 @@ namespace Inter
                 Error("type error");
         }
 
-        public VarType Check(VarType p1, VarType p2)
+        public static VarType Check(VarType p1, VarType p2)
         {
             if (VarType.numeric(p1) && VarType.numeric(p2))
                 return p2;

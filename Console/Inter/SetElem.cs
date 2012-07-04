@@ -16,7 +16,7 @@ namespace Inter
         public readonly Id array;
         public readonly Expr index;
         public readonly Expr expr;
-        
+
         public SetElem(Access x, Expr y)
         {
             array = x.array;
@@ -25,8 +25,8 @@ namespace Inter
             if (Check(x.type, expr.type) == null)
                 Error("type error");
         }
-        
-        public VarType Check(VarType p1, VarType p2)
+
+        public static VarType Check(VarType p1, VarType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;
