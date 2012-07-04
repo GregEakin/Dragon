@@ -47,7 +47,7 @@ namespace Parser
             if (look.tag == t)
                 move();
             else
-                throw new Error("near line " + Lexer.Line + ": syntax error");
+                throw new Error("near line " + Lexer.Line + ": syntax error look.tag " + look.tag + " != " + t);
         }
 
         private Stmt block()

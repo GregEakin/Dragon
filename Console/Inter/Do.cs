@@ -26,7 +26,7 @@ namespace Inter
             expr = x;
             stmt = s;
             if (expr.type != VarType.BOOL)
-                throw new Error("near line " + expr.lexline + ": boolean required in while");
+                throw new Error("near line " + expr.lexline + ": boolean required in while, not " + expr.type);
         }
 
         public override void Gen(int b, int a)

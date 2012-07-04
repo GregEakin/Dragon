@@ -22,7 +22,7 @@ namespace Inter
             expr = x;
             stmt = s;
             if (expr.type != VarType.BOOL)
-                throw new Error("near line " + expr.lexline + ": boolean required in if");
+                throw new Error("near line " + expr.lexline + ": boolean required in if, not " + expr.type);
         }
 
         public override void Gen(int b, int a)

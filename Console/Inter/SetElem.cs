@@ -24,7 +24,7 @@ namespace Inter
             index = x.index;
             expr = y;
             if (Check(x.type, expr.type) == null)
-                throw new Error("near line " + lexline + ": type error");
+                throw new Error("near line " + lexline + ": type error for " + x.type + ", " + expr.type);
         }
 
         private static VarType Check(VarType p1, VarType p2)
