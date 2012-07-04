@@ -27,7 +27,7 @@ namespace Parser
             move();
         }
 
-        public void program()
+        public void Program()
         {
             Stmt s = block();
             int begin = s.NewLabel();
