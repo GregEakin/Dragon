@@ -15,9 +15,9 @@ namespace Inter
     /// </summary>
     public class Node
     {
-        static int labels;
+        private static int labels;
 
-        readonly int lexline;
+        private readonly int lexline;
 
         public Node()
         {

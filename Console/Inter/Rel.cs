@@ -18,7 +18,7 @@ namespace Inter
             : base(tok, x1, x2, Check(x1.type, x2.type))
         { }
 
-        public static VarType Check(VarType p1, VarType p2)
+        private static VarType Check(VarType p1, VarType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;

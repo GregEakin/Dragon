@@ -26,7 +26,7 @@ namespace Inter
                 Error("type error");
         }
 
-        public static VarType Check(VarType p1, VarType p2)
+        private static VarType Check(VarType p1, VarType p2)
         {
             if (p1 is Array || p2 is Array)
                 return null;
@@ -40,8 +40,8 @@ namespace Inter
 
         public override void Gen(int b, int a)
         {
-            string s1 = index.Reduce().ToString();
-            string s2 = expr.Reduce().ToString();
+            var s1 = index.Reduce();
+            var s2 = expr.Reduce();
             Emit(array + " [ " + s1 + " ] = " + s2);
         }
     }

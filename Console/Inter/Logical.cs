@@ -24,14 +24,14 @@ namespace Inter
             expr2 = x2;
         }
 
-        protected Logical(Token tok, Expr x1, Expr x2, VarType check)
-            : base(tok, check)
+        protected Logical(Token tok, Expr x1, Expr x2, VarType type)
+            : base(tok, type)
         {
             expr1 = x1;
             expr2 = x2;
         }
 
-        public static VarType Check(VarType p1, VarType p2)
+        private static VarType Check(VarType p1, VarType p2)
         {
             if (p1 == VarType.BOOL && p2 == VarType.BOOL)
                 return VarType.BOOL;
@@ -41,9 +41,9 @@ namespace Inter
 
         public override Expr Gen()
         {
-            int f = NewLabel();
-            int a = NewLabel();
-            Temp temp = new Temp(type);
+            var f = NewLabel();
+            var a = NewLabel();
+            var temp = new Temp(type);
             Jumping(0, f);
             Emit(temp + " = true");
             Emit("goto L" + a);
