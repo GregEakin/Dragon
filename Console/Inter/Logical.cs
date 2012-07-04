@@ -18,16 +18,20 @@ namespace Inter
         public readonly Expr expr2;
 
         public Logical(Token tok, Expr x1, Expr x2)
-            : base(tok, null)
+            : base(tok, Check(x1.type, x2.type))
         {
             expr1 = x1;
             expr2 = x2;
-            type = Check(expr1.type, expr2.type);
-            if (type == null)
-                Error("type error");
         }
 
-        public virtual VarType Check(VarType p1, VarType p2)
+        protected Logical(Token tok, Expr x1, Expr x2, VarType check)
+            : base(tok, check)
+        {
+            expr1 = x1;
+            expr2 = x2;
+        }
+
+        public static VarType Check(VarType p1, VarType p2)
         {
             if (p1 == VarType.BOOL && p2 == VarType.BOOL)
                 return VarType.BOOL;

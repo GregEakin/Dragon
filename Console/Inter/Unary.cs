@@ -17,12 +17,9 @@ namespace Inter
         public readonly Expr expr;
 
         public Unary(Token tok, Expr x)
-            : base(tok, null)
+            : base(tok, VarType.max(VarType.INT, x.type))
         {
             expr = x;
-            type = VarType.max(VarType.INT, expr.type);
-            if (type == null)
-                Error("type error");
         }
 
         public override Expr Gen()

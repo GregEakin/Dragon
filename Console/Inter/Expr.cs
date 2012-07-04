@@ -15,12 +15,14 @@ namespace Inter
     public class Expr : Node
     {
         public readonly Token op;
-        public VarType type;
+        public readonly VarType type;
 
         public Expr(Token tok, VarType p)
         {
             op = tok;
             type = p;
+            if (type == null)
+                Error("type error");
         }
 
         public virtual Expr Gen()
