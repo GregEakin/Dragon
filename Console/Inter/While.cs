@@ -4,10 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using ConsoleX;
+using Symbols;
+
 namespace Inter
 {
-    using Symbols;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -20,12 +21,12 @@ namespace Inter
         {
         }
 
-        public void init(Expr x, Stmt s)
+        public void Init(Expr x, Stmt s)
         {
             expr = x;
             stmt = s;
             if (expr.type != VarType.BOOL)
-                expr.Error("boolean required in while");
+                throw new Error("near line " + expr.lexline + ": boolean required in while");
         }
 
         public override void Gen(int b, int a)

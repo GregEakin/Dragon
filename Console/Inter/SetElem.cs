@@ -4,10 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using ConsoleX;
+using Symbols;
+
 namespace Inter
 {
-    using Symbols;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -23,7 +24,7 @@ namespace Inter
             index = x.index;
             expr = y;
             if (Check(x.type, expr.type) == null)
-                Error("type error");
+                throw new Error("near line " + lexline + ": type error");
         }
 
         private static VarType Check(VarType p1, VarType p2)

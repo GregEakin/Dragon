@@ -4,11 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using ConsoleX;
+using Lexical;
+using Symbols;
+
 namespace Inter
 {
-    using Lexical;
-    using Symbols;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -22,7 +23,7 @@ namespace Inter
             op = tok;
             type = p;
             if (type == null)
-                Error("type error");
+                throw new Error("near line " + lexline + ": type error");
         }
 
         public virtual Expr Gen()

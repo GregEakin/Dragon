@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Lexical;
+using Symbols;
+
 namespace Inter
 {
-    using Lexical;
-    using Symbols;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

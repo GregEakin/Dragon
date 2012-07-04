@@ -4,13 +4,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using ConsoleX;
+using Inter;
+using Lexical;
+using Symbols;
+
 namespace Parser
 {
-    using ConsoleX;
-    using Inter;
-    using Lexical;
-    using Symbols;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -42,17 +42,12 @@ namespace Parser
             look = lex.Scan();
         }
 
-        private void error(string s)
-        {
-            throw new Error("near line " + Lexer.Line + ": " + s);
-        }
-
         private void match(int t)
         {
             if (look.tag == t)
                 move();
             else
-                error("syntax error");
+                throw new Error("near line " + Lexer.Line + ": syntax error");
         }
 
         private Stmt block()
@@ -144,7 +139,7 @@ namespace Parser
                     x = boolExpr();
                     match(')');
                     s1 = stmt();
-                    whilenode.init(x, s1);
+                    whilenode.Init(x, s1);
                     Stmt.Enclosing = savedStmt;
                     return whilenode;
 
@@ -159,7 +154,7 @@ namespace Parser
                     x = boolExpr();
                     match(')');
                     match(';');
-                    donode.init(x, s1);
+                    donode.Init(x, s1);
                     Stmt.Enclosing = savedStmt;
                     return donode;
 
@@ -183,7 +178,7 @@ namespace Parser
             match(Tag.ID);
             Id id = top.get(t);
             if (id == null)
-                error(t + " undeclared");
+                throw new Error("near line " + Lexer.Line + ": " + t + " undeclared");
             if (look.tag == '=')
             {
                 move();
@@ -339,21 +334,19 @@ namespace Parser
                     string a = look.ToString();
                     Id id = top.get(look);
                     if (id == null)
-                        error(look + " undeclared");
+                        throw new Error("near line " + Lexer.Line + ": " + look + " undeclared");
                     move();
                     if (look.tag != '[')
                         return id;
                     else
                         return offset(id);
                 default:
-                    error("syntax error");
-                    return null;
+                    throw new Error("near line " + Lexer.Line + ": syntax error");
             }
         }
 
         private Access offset(Id a)
         {
-            Expr loc = null;
             VarType type = a.type;
             match('[');
             Expr i = boolExpr();
@@ -361,7 +354,7 @@ namespace Parser
             type = ((Array)type).of;
             Expr w = new Constant(type.width);
             Expr t1 = new Arith(new Token('*'), i, w);
-            loc = t1;
+            Expr loc = t1;
             while (look.tag == '[')
             {
                 match('[');

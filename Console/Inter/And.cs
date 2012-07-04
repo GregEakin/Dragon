@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Lexical;
+
 namespace Inter
 {
-    using Lexical;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

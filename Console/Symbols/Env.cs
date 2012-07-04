@@ -4,12 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Inter;
+using Lexical;
+
 namespace Symbols
 {
-    using System.Collections.Generic;
-    using Inter;
-    using Lexical;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

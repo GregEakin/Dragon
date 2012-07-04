@@ -4,12 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Lexical;
+
 namespace Inter
 {
-    using System;
-    using ConsoleX;
-    using Lexical;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -17,16 +16,11 @@ namespace Inter
     {
         private static int labels;
 
-        private readonly int lexline;
+        public readonly int lexline;
 
         public Node()
         {
             lexline = Lexer.Line;
-        }
-
-        public void Error(string s)
-        {
-            throw new Error("near line " + lexline + ": " + s);
         }
 
         public int NewLabel()

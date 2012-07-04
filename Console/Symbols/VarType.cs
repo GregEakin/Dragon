@@ -4,10 +4,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Lexical;
+
 namespace Symbols
 {
-    using Lexical;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>

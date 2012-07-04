@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using ConsoleX;
+
 namespace Inter
 {
     /// <summary>
@@ -16,7 +18,7 @@ namespace Inter
         public Break()
         {
             if (Stmt.Enclosing == Stmt.Null)
-                Error("unenclosed  break");
+                throw new Error("near line " + lexline + ": unenclosed  break");
             stmt = Stmt.Enclosing;
         }
 

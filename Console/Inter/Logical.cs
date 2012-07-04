@@ -6,9 +6,9 @@
 
 using Lexical;
 using Symbols;
+
 namespace Inter
 {
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
