@@ -18,26 +18,34 @@ namespace Lexical
     {
         private readonly Dictionary<string, Word> words = new Dictionary<string, Word>();
 
-        public static int Line = 1;
+        private static int line = 1;
 
         private char peek = ' ';
 
         public Lexer()
         {
-            reserve(new Word("if", Tag.IF));
-            reserve(new Word("else", Tag.ELSE));
-            reserve(new Word("while", Tag.WHILE));
-            reserve(new Word("do", Tag.DO));
-            reserve(new Word("break", Tag.BREAK));
-            reserve(new Word("and", Tag.AND));
-            reserve(new Word("or", Tag.OR));
-            reserve(new Word("not", Tag.NOT));
-            reserve(Word.TRUE);
-            reserve(Word.FALSE);
-            reserve(VarType.INT);
-            reserve(VarType.CHAR);
-            reserve(VarType.BOOL);
-            reserve(VarType.FLOAT);
+            Reserve(new Word("if", Tag.IF));
+            Reserve(new Word("else", Tag.ELSE));
+            Reserve(new Word("while", Tag.WHILE));
+            Reserve(new Word("do", Tag.DO));
+            Reserve(new Word("break", Tag.BREAK));
+            Reserve(new Word("and", Tag.AND));
+            Reserve(new Word("or", Tag.OR));
+            Reserve(new Word("not", Tag.NOT));
+            Reserve(Word.TRUE);
+            Reserve(Word.FALSE);
+            Reserve(VarType.INT);
+            Reserve(VarType.CHAR);
+            Reserve(VarType.BOOL);
+            Reserve(VarType.FLOAT);
+        }
+
+        public static int Line
+        {
+            get
+            {
+                return line;
+            }
         }
 
         private void ReadCh()
@@ -45,7 +53,7 @@ namespace Lexical
             peek = (char)Console.Read();
         }
 
-        private Boolean ReadCh(char c)
+        private bool ReadCh(char c)
         {
             ReadCh();
             if (peek != c)
@@ -54,7 +62,7 @@ namespace Lexical
             return true;
         }
 
-        private Boolean ReadChAgain(char c)
+        private bool ReadChAgain(char c)
         {
             if (peek != c)
                 return false;
@@ -69,7 +77,7 @@ namespace Lexical
                 if (peek == ' ' || peek == '\t' || peek == '\r')
                     continue;
                 else if (peek == '\n')
-                    Line = Line + 1;
+                    line = line + 1;
                 else
                     break;
             }
@@ -93,45 +101,48 @@ namespace Lexical
                 int v = 0;
                 do
                 {
-                    v = 10 * v + (int)char.GetNumericValue(peek); ReadCh();
+                    v = 10 * v + (int)char.GetNumericValue(peek);
+                    ReadCh();
                 }
                 while (char.IsDigit(peek));
                 if (peek != '.')
                     return new Num(v);
-                float x = v; float d = 10.0f;
+                float x = v;
+                float d = 10.0f;
                 while (true)
                 {
                     ReadCh();
                     if (!char.IsDigit(peek))
                         break;
-                    x = x + (int)char.GetNumericValue(peek) / d; d = d * 10.0f;
+                    x = x + (int)char.GetNumericValue(peek) / d;
+                    d = d * 10.0f;
                 }
                 return new Real(x);
             }
 
             if (char.IsLetter(peek))
             {
-                StringBuilder b = new StringBuilder();
+                var b = new StringBuilder();
                 do
                 {
                     b.Append(peek);
                     ReadCh();
                 }
                 while (char.IsLetterOrDigit(peek));
-                string s = b.ToString();
+                var s = b.ToString();
                 if (words.ContainsKey(s))
                     return words[s];
-                Word w = new Word(s, Tag.ID);
+                var w = new Word(s, Tag.ID);
                 words.Add(s, w);
                 return w;
             }
 
-            Token tok = new Token(peek);
+            var tok = new Token(peek);
             peek = ' ';
             return tok;
         }
 
-        private void reserve(Word w)
+        private void Reserve(Word w)
         {
             words.Add(w.Lexeme, w);
         }
