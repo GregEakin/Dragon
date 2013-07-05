@@ -6,15 +6,12 @@
 
 namespace Lexical
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Num : Token
     {
         public readonly int Value;
 
         public Num(int v)
-            : base(Tag.NUM)
+            : base(Lexical.Tag.NUM)
         {
             Value = v;
         }

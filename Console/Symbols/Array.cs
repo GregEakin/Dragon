@@ -8,25 +8,22 @@ namespace Symbols
 {
     using Lexical;
 
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Array : VarType
     {
-        public readonly VarType of;
-        
-        public readonly int size;
+        public readonly VarType Of;
+
+        public readonly int Size;
 
         public Array(int sz, VarType p)
-            : base("[]", Tag.INDEX, sz * p.width)
+            : base("[]", Lexical.Tag.INDEX, sz * p.width)
         {
-            size = sz;
-            of = p;
+            Size = sz;
+            Of = p;
         }
 
         public override string ToString()
         {
-            return "[" + size + "] " + of;
+            return "[" + Size + "] " + Of;
         }
     }
 }

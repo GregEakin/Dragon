@@ -8,22 +8,18 @@ using System.Globalization;
 
 namespace Lexical
 {
-
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Token
     {
-        public readonly int tag;
+        public readonly int Tag;
 
-        public Token(int t) 
+        public Token(int tag) 
         { 
-            tag = t; 
+            this.Tag = tag;
         }
         
         public override string ToString()
         {
-            return ((char)tag).ToString(CultureInfo.InvariantCulture);
+            return ((char)this.Tag).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

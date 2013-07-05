@@ -17,10 +17,6 @@ namespace Inter
         private Expr expr;
         private Stmt stmt;
 
-        public While()
-        {
-        }
-
         public void Init(Expr x, Stmt s)
         {
             expr = x;
@@ -31,7 +27,7 @@ namespace Inter
 
         public override void Gen(int b, int a)
         {
-            after = a;
+            After = a;
             expr.Jumping(0, a);
             int label = NewLabel();
             EmitLabel(label);

@@ -6,10 +6,6 @@
 
 namespace Lexical
 {
-
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Word : Token
     {
         public readonly string Lexeme;
@@ -26,17 +22,17 @@ namespace Lexical
         }
 
         public static readonly Word
-            AND = new Word("and", Tag.AND),
-            OR = new Word("or", Tag.OR),
-            NOT = new Word("not", Tag.NOT),
-            EQ = new Word("==", Tag.EQ),
-            NE = new Word("<>", Tag.NE),
-            LE = new Word("<=", Tag.LE),
-            GE = new Word(">=", Tag.GE),
-            MINUS = new Word("minus", Tag.MINUS),
-            PLUS = new Word("plus", Tag.PLUS),
-            TRUE = new Word("true", Tag.TRUE),
-            FALSE = new Word("false", Tag.FALSE),
-            TEMP = new Word("t", Tag.TEMP);
+            AND = new Word("and", Lexical.Tag.AND),
+            OR = new Word("or", Lexical.Tag.OR),
+            NOT = new Word("not", Lexical.Tag.NOT),
+            EQ = new Word("==", Lexical.Tag.EQ),
+            NE = new Word("<>", Lexical.Tag.NE),
+            LE = new Word("<=", Lexical.Tag.LE),
+            GE = new Word(">=", Lexical.Tag.GE),
+            MINUS = new Word("minus", Lexical.Tag.MINUS),
+            PLUS = new Word("plus", Lexical.Tag.PLUS),
+            TRUE = new Word("true", Lexical.Tag.TRUE),
+            FALSE = new Word("false", Lexical.Tag.FALSE),
+            TEMP = new Word("t", Lexical.Tag.TEMP);
     }
 }

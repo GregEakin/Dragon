@@ -18,7 +18,7 @@ namespace Inter
         public readonly Expr expr2;
 
         public Arith(Token tok, Expr x1, Expr x2)
-            : base(tok, VarType.max(x1.type, x2.type))
+            : base(tok, VarType.Max(x1.type, x2.type))
         {
             expr1 = x1;
             expr2 = x2;

@@ -13,14 +13,25 @@ namespace Inter
     {
         public static readonly Stmt Null = new Stmt();
 
-        public static Stmt Enclosing = Stmt.Null;
+        private static Stmt enclosing = Stmt.Null;
 
-        public int after;
+        public static Stmt Enclosing
+        {
+            get
+            {
+                return enclosing;
+            }
 
-        public Stmt()
-        { }
+            set
+            {
+                enclosing = value;
+            }
+        }
+
+        public int After { get; set; }
 
         public virtual void Gen(int b, int a)
-        { }
+        {
+        }
     }
 }

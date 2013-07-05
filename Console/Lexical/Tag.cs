@@ -6,9 +6,6 @@
 
 namespace Lexical
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Tag
     {
         public const int

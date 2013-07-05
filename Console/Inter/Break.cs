@@ -24,7 +24,7 @@ namespace Inter
 
         public override void Gen(int b, int a)
         {
-            Emit("goto L" + stmt.after);
+            Emit("goto L" + stmt.After);
         }
     }
 }

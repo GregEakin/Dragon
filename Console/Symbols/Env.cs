@@ -10,9 +10,6 @@ using Lexical;
 
 namespace Symbols
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Env
     {
         private readonly Dictionary<Token, Id> table = new Dictionary<Token, Id>();
@@ -24,12 +21,12 @@ namespace Symbols
             prev = n;
         }
 
-        public void put(Token w, Id i)
+        public void Put(Token w, Id i)
         {
             table.Add(w, i);
         }
 
-        public Id get(Token w)
+        public Id Get(Token w)
         {
             for (Env e = this; e != null; e = e.prev)
             {

@@ -11,9 +11,6 @@ namespace Lexical
     using System.Text;
     using Symbols;
 
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Lexer
     {
         private readonly Dictionary<string, Word> words = new Dictionary<string, Word>();
@@ -76,7 +73,7 @@ namespace Lexical
             {
                 if (peek == ' ' || peek == '\t' || peek == '\r')
                     continue;
-                else if (peek == '\n')
+                if (peek == '\n')
                     line = line + 1;
                 else
                     break;
@@ -85,20 +82,16 @@ namespace Lexical
             switch (peek)
             {
                 case '=':
-                    if (ReadCh('=')) return Word.EQ;
-                    else return new Token('=');
+                    return this.ReadCh('=') ? Word.EQ : new Token('=');
                 case '<':
-                    if (ReadCh('>')) return Word.NE;
-                    if (ReadChAgain('=')) return Word.LE;
-                    else return new Token('<');
+                    return this.ReadCh('>') ? Word.NE : (this.ReadChAgain('=') ? Word.LE : new Token('<'));
                 case '>':
-                    if (ReadCh('=')) return Word.GE;
-                    else return new Token('>');
+                    return this.ReadCh('=') ? Word.GE : new Token('>');
             }
 
             if (char.IsDigit(peek))
             {
-                int v = 0;
+                var v = 0;
                 do
                 {
                     v = 10 * v + (int)char.GetNumericValue(peek);
@@ -107,8 +100,8 @@ namespace Lexical
                 while (char.IsDigit(peek));
                 if (peek != '.')
                     return new Num(v);
-                float x = v;
-                float d = 10.0f;
+                var x = (float)v;
+                var d = 10.0f;
                 while (true)
                 {
                     ReadCh();

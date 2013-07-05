@@ -22,26 +22,25 @@ namespace Symbols
         }
 
         public static readonly VarType
-            FLOAT = new VarType("float", Tag.BASIC, 8),
-            INT = new VarType("int", Tag.BASIC, 4),
-            CHAR = new VarType("char", Tag.BASIC, 2),
-            BOOL = new VarType("bool", Tag.BASIC, 1);
+            FLOAT = new VarType("float", Lexical.Tag.BASIC, 8),
+            INT = new VarType("int", Lexical.Tag.BASIC, 4),
+            CHAR = new VarType("char", Lexical.Tag.BASIC, 2),
+            BOOL = new VarType("bool", Lexical.Tag.BASIC, 1);
 
-        public static bool numeric(VarType p)
+        public static bool Numeric(VarType p)
         {
             return p == VarType.CHAR || p == VarType.INT || p == VarType.FLOAT;
         }
 
-        public static VarType max(VarType p1, VarType p2)
+        public static VarType Max(VarType p1, VarType p2)
         {
-            if (!numeric(p1) || !numeric(p2))
+            if (!Numeric(p1) || !Numeric(p2))
                 return null;
-            else if (p1 == VarType.FLOAT || p2 == VarType.FLOAT)
+            if (p1 == VarType.FLOAT || p2 == VarType.FLOAT)
                 return VarType.FLOAT;
-            else if (p1 == VarType.INT || p2 == VarType.INT)
+            if (p1 == VarType.INT || p2 == VarType.INT)
                 return VarType.INT;
-            else
-                return VarType.CHAR;
+            return VarType.CHAR;
         }
     }
 }

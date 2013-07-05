@@ -27,7 +27,7 @@ namespace Inter
 
         private static VarType Check(VarType p1, VarType p2)
         {
-            if (VarType.numeric(p1) && VarType.numeric(p2))
+            if (VarType.Numeric(p1) && VarType.Numeric(p2))
                 return p2;
             else if (p1 == VarType.BOOL && p2 == VarType.BOOL)
                 return p2;

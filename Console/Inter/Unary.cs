@@ -17,7 +17,7 @@ namespace Inter
         public readonly Expr expr;
 
         public Unary(Token tok, Expr x)
-            : base(tok, VarType.max(VarType.INT, x.type))
+            : base(tok, VarType.Max(VarType.INT, x.type))
         {
             expr = x;
         }

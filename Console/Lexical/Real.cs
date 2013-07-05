@@ -6,16 +6,12 @@
 
 namespace Lexical
 {
-
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Real : Token
     {
         public readonly float Value;
 
         public Real(float v)
-            : base(Tag.REAL)
+            : base(Lexical.Tag.REAL)
         {
             Value = v;
         }

@@ -33,7 +33,7 @@ namespace Inter
                 return null;
             else if (p1 == p2)
                 return p2;
-            else if (VarType.numeric(p1) && VarType.numeric(p2))
+            else if (VarType.Numeric(p1) && VarType.Numeric(p2))
                 return p2;
             else
                 return null;

@@ -1,8 +1,8 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Parser.cs" company="">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Parser.cs" company="Greg Eakin">
+//   This is text
 // </copyright>
-// -----------------------------------------------------------------------
+// --------------------------------------------------------------------------------------------------------------------
 
 using ConsoleX;
 using Inter;
@@ -11,361 +11,365 @@ using Symbols;
 
 namespace Parser
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Parser
     {
+        #region Fields
+
         private readonly Lexer lex;
+
         private Token look;
+
         private Env top;
+
         private int used;
+
+        #endregion
+
+        #region Constructors and Destructors
 
         public Parser(Lexer l)
         {
             lex = l;
-            move();
+            Move();
         }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         public void Program()
         {
-            Stmt s = block();
-            int begin = s.NewLabel();
-            int after = s.NewLabel();
+            var s = Block();
+            var begin = s.NewLabel();
+            var after = s.NewLabel();
             s.EmitLabel(begin);
             s.Gen(begin, after);
             s.EmitLabel(after);
         }
 
-        private void move()
+        #endregion
+
+        #region Methods
+
+        private Expr AddExpr()
         {
-            look = lex.Scan();
+            var x = MultExpr();
+            while (look.Tag == '+' || look.Tag == '-')
+            {
+                var tok = look;
+                Move();
+                x = new Arith(tok, x, MultExpr());
+            }
+            return x;
         }
 
-        private void match(int t)
+        private Stmt AssignStmt()
         {
-            if (look.tag == t)
-                move();
+            Stmt stmt;
+            var t = look;
+            Match(Tag.ID);
+            var id = top.Get(t);
+            if (id == null)
+                throw new Error("near line " + Lexer.Line + ": " + t + " undeclared");
+            if (look.Tag == '=')
+            {
+                Move();
+                stmt = new Set(id, BoolExpr());
+            }
             else
-                throw new Error("near line " + Lexer.Line + ": syntax error look.tag " + look.tag + " != " + t);
+            {
+                var x = Offset(id);
+                Match('=');
+                stmt = new SetElem(x, BoolExpr());
+            }
+            Match(';');
+            return stmt;
         }
 
-        private Stmt block()
+        private Stmt Block()
         {
-            match('{');
-            Env savedEnv = top;
+            Match('{');
+            var savedEnv = top;
             top = new Env(top);
-            decls();
-            Stmt s = stmts();
-            match('}');
+            Decls();
+            var s = Stmts();
+            Match('}');
             top = savedEnv;
             return s;
         }
 
-        private void decls()
+        private Expr BoolExpr()
         {
-            while (look.tag == Tag.BASIC)
+            var x = JoinExpr();
+            while (look.Tag == Tag.OR)
             {
-                var x = this.lex;
+                var tok = look;
+                Move();
+                x = new Or(tok, x, JoinExpr());
+            }
+            return x;
+        }
 
-                VarType p = type();
-                Token tok = look;
-                match(Tag.ID);
-                match(';');
-                Id id = new Id((Word)tok, p, used);
-                top.put(tok, id);
+        private void Decls()
+        {
+            while (look.Tag == Tag.BASIC)
+            {
+                var p = Type();
+                var tok = look;
+                Match(Tag.ID);
+                Match(';');
+                var id = new Id((Word)tok, p, used);
+                top.Put(tok, id);
                 used = used + p.width;
             }
         }
 
-        private VarType type()
+        private VarType Dims(VarType p)
         {
-            VarType p = (VarType)look;
-            match(Tag.BASIC);
-            if (look.tag != '[')
-                return p;
-            else
-                return dims(p);
-        }
-
-        private VarType dims(VarType p)
-        {
-            match('[');
-            Token tok = look;
-            match(Tag.NUM);
-            match(']');
-            if (look.tag == '[')
-                p = dims(p);
+            Match('[');
+            var tok = look;
+            Match(Tag.NUM);
+            Match(']');
+            if (look.Tag == '[')
+                p = Dims(p);
             return new Array(((Num)tok).Value, p);
         }
 
-        private Stmt stmts()
+        private Expr EqualityExpr()
         {
-            if (look.tag == '}')
-                return Stmt.Null;
-            else
-                return new Seq(stmt(), stmts());
+            var x = RelExpr();
+            while (look.Tag == Tag.EQ || look.Tag == Tag.NE)
+            {
+                var tok = look;
+                Move();
+                x = new Rel(tok, x, RelExpr());
+            }
+            return x;
         }
 
-        private Stmt stmt()
+        private Expr ExponentExpr()
+        {
+            var x = UnaryExpr();
+            while (look.Tag == '^')
+            {
+                var tok = look;
+                Move();
+                x = new Arith(tok, x, UnaryExpr());
+            }
+            return x;
+        }
+
+        private Expr FactorExpr()
         {
             Expr x;
-            Stmt s1, s2;
-            Stmt savedStmt;
-            switch (look.tag)
-            {
-                case ';':
-                    move();
-                    return Stmt.Null;
-
-                case Tag.IF:
-                    match(Tag.IF);
-                    match('(');
-                    x = boolExpr();
-                    match(')');
-                    s1 = stmt();
-                    if (look.tag != Tag.ELSE)
-                        return new If(x, s1);
-                    match(Tag.ELSE);
-                    s2 = stmt();
-                    return new Else(x, s1, s2);
-
-                case Tag.WHILE:
-                    While whilenode = new While();
-                    savedStmt = Stmt.Enclosing;
-                    Stmt.Enclosing = whilenode;
-                    match(Tag.WHILE);
-                    match('(');
-                    x = boolExpr();
-                    match(')');
-                    s1 = stmt();
-                    whilenode.Init(x, s1);
-                    Stmt.Enclosing = savedStmt;
-                    return whilenode;
-
-                case Tag.DO:
-                    Do donode = new Do();
-                    savedStmt = Stmt.Enclosing;
-                    Stmt.Enclosing = donode;
-                    match(Tag.DO);
-                    s1 = stmt();
-                    match(Tag.WHILE);
-                    match('(');
-                    x = boolExpr();
-                    match(')');
-                    match(';');
-                    donode.Init(x, s1);
-                    Stmt.Enclosing = savedStmt;
-                    return donode;
-
-                case Tag.BREAK:
-                    match(Tag.BREAK);
-                    match(';');
-                    return new Break();
-
-                case '{':
-                    return block();
-
-                default:
-                    return assignStmt();
-            }
-        }
-
-        private Stmt assignStmt()
-        {
-            Stmt stmt;
-            Token t = look;
-            match(Tag.ID);
-            Id id = top.get(t);
-            if (id == null)
-                throw new Error("near line " + Lexer.Line + ": " + t + " undeclared");
-            if (look.tag == '=')
-            {
-                move();
-                stmt = new Set(id, boolExpr());
-            }
-            else
-            {
-                Access x = offset(id);
-                match('=');
-                stmt = new SetElem(x, boolExpr());
-            }
-            match(';');
-            return stmt;
-        }
-
-        private Expr boolExpr()
-        {
-            Expr x = joinExpr();
-            while (look.tag == Tag.OR)
-            {
-                Token tok = look;
-                move();
-                x = new Or(tok, x, joinExpr());
-            }
-            return x;
-        }
-
-        private Expr joinExpr()
-        {
-            Expr x = equalityExpr();
-            while (look.tag == Tag.AND)
-            {
-                Token tok = look;
-                move();
-                x = new And(tok, x, equalityExpr());
-            }
-            return x;
-        }
-
-        private Expr equalityExpr()
-        {
-            Expr x = relExpr();
-            while (look.tag == Tag.EQ || look.tag == Tag.NE)
-            {
-                Token tok = look;
-                move();
-                x = new Rel(tok, x, relExpr());
-            }
-            return x;
-        }
-
-        private Expr relExpr()
-        {
-            Expr x = addExpr();
-            switch (look.tag)
-            {
-                case '<':
-                case Tag.LE:
-                case Tag.GE:
-                case '>':
-                    Token tok = look;
-                    move();
-                    return new Rel(tok, x, addExpr());
-                default:
-                    return x;
-            }
-        }
-
-        private Expr addExpr()
-        {
-            Expr x = multExpr();
-            while (look.tag == '+' || look.tag == '-')
-            {
-                Token tok = look;
-                move();
-                x = new Arith(tok, x, multExpr());
-            }
-            return x;
-        }
-
-        private Expr multExpr()
-        {
-            Expr x = exponentExpr();
-            while (look.tag == '*' || look.tag == '/')
-            {
-                Token tok = look;
-                move();
-                x = new Arith(tok, x, unaryExpr());
-            }
-            return x;
-        }
-
-        private Expr exponentExpr()
-        {
-            Expr x = unaryExpr();
-            while (look.tag == '^')
-            {
-                Token tok = look;
-                move();
-                x = new Arith(tok, x, unaryExpr());
-            }
-            return x;
-        }
-
-        private Expr unaryExpr()
-        {
-            if (look.tag == '+')
-            {
-                move();
-                return unaryExpr();
-            }
-            if (look.tag == '-')
-            {
-                move();
-                return new Unary(Word.MINUS, unaryExpr());
-            }
-            else if (look.tag == Tag.NOT)
-            {
-                Token tok = look;
-                move();
-                return new Not(tok, unaryExpr());
-            }
-            else return factorExpr();
-        }
-
-        private Expr factorExpr()
-        {
-            Expr x;
-            switch (look.tag)
+            switch (look.Tag)
             {
                 case '(':
-                    move();
-                    x = boolExpr();
-                    match(')');
+                    Move();
+                    x = BoolExpr();
+                    Match(')');
                     return x;
                 case Tag.NUM:
                     x = new Constant(look, VarType.INT);
-                    move();
+                    Move();
                     return x;
                 case Tag.REAL:
                     x = new Constant(look, VarType.FLOAT);
-                    move();
+                    Move();
                     return x;
                 case Tag.TRUE:
                     x = Constant.TRUE;
-                    move();
+                    Move();
                     return x;
                 case Tag.FALSE:
                     x = Constant.FALSE;
-                    move();
+                    Move();
                     return x;
                 case Tag.ID:
-                    string a = look.ToString();
-                    Id id = top.get(look);
+                    var id = top.Get(look);
                     if (id == null)
                         throw new Error("near line " + Lexer.Line + ": " + look + " undeclared");
-                    move();
-                    if (look.tag != '[')
-                        return id;
-                    else
-                        return offset(id);
+                    Move();
+                    return look.Tag != '[' ? (Expr)id : Offset(id);
                 default:
                     throw new Error("near line " + Lexer.Line + ": syntax error");
             }
         }
 
-        private Access offset(Id a)
+        private Expr JoinExpr()
         {
-            VarType type = a.type;
-            match('[');
-            Expr i = boolExpr();
-            match(']');
-            type = ((Array)type).of;
-            Expr w = new Constant(type.width);
-            Expr t1 = new Arith(new Token('*'), i, w);
-            Expr loc = t1;
-            while (look.tag == '[')
+            var x = EqualityExpr();
+            while (look.Tag == Tag.AND)
             {
-                match('[');
-                i = boolExpr();
-                match(']');
-                type = ((Array)type).of;
+                var tok = look;
+                Move();
+                x = new And(tok, x, EqualityExpr());
+            }
+            return x;
+        }
+
+        private void Match(int t)
+        {
+            if (look.Tag == t)
+                Move();
+            else
+                throw new Error("near line " + Lexer.Line + ": syntax error look.tag " + look.Tag + " != " + t);
+        }
+
+        private void Move()
+        {
+            look = lex.Scan();
+        }
+
+        private Expr MultExpr()
+        {
+            var x = ExponentExpr();
+            while (look.Tag == '*' || look.Tag == '/')
+            {
+                var tok = look;
+                Move();
+                x = new Arith(tok, x, UnaryExpr());
+            }
+            return x;
+        }
+
+        private Access Offset(Id a)
+        {
+            var type = a.type;
+            Match('[');
+            var i = BoolExpr();
+            Match(']');
+            type = ((Array)type).Of;
+            var w = new Constant(type.width);
+            var t1 = new Arith(new Token('*'), i, w);
+            var loc = t1;
+            while (look.Tag == '[')
+            {
+                Match('[');
+                i = BoolExpr();
+                Match(']');
+                type = ((Array)type).Of;
                 w = new Constant(type.width);
                 t1 = new Arith(new Token('*'), i, w);
                 loc = new Arith(new Token('+'), loc, t1);
             }
             return new Access(a, loc, type);
         }
+
+        private Expr RelExpr()
+        {
+            var x = AddExpr();
+            switch (look.Tag)
+            {
+                case '<':
+                case Tag.LE:
+                case Tag.GE:
+                case '>':
+                    var tok = look;
+                    Move();
+                    return new Rel(tok, x, AddExpr());
+                default:
+                    return x;
+            }
+        }
+
+        private Stmt Stmt()
+        {
+            Expr x;
+            Stmt s1;
+            Stmt savedStmt;
+            switch (look.Tag)
+            {
+                case ';':
+                    Move();
+                    return Inter.Stmt.Null;
+
+                case Tag.IF:
+                    Match(Tag.IF);
+                    Match('(');
+                    x = BoolExpr();
+                    Match(')');
+                    s1 = Stmt();
+                    if (look.Tag != Tag.ELSE)
+                        return new If(x, s1);
+                    Match(Tag.ELSE);
+                    var s2 = Stmt();
+                    return new Else(x, s1, s2);
+
+                case Tag.WHILE:
+                    var whilenode = new While();
+                    savedStmt = Inter.Stmt.Enclosing;
+                    Inter.Stmt.Enclosing = whilenode;
+                    Match(Tag.WHILE);
+                    Match('(');
+                    x = BoolExpr();
+                    Match(')');
+                    s1 = Stmt();
+                    whilenode.Init(x, s1);
+                    Inter.Stmt.Enclosing = savedStmt;
+                    return whilenode;
+
+                case Tag.DO:
+                    var donode = new Do();
+                    savedStmt = Inter.Stmt.Enclosing;
+                    Inter.Stmt.Enclosing = donode;
+                    Match(Tag.DO);
+                    s1 = Stmt();
+                    Match(Tag.WHILE);
+                    Match('(');
+                    x = BoolExpr();
+                    Match(')');
+                    Match(';');
+                    donode.Init(x, s1);
+                    Inter.Stmt.Enclosing = savedStmt;
+                    return donode;
+
+                case Tag.BREAK:
+                    Match(Tag.BREAK);
+                    Match(';');
+                    return new Break();
+
+                case '{':
+                    return Block();
+
+                default:
+                    return AssignStmt();
+            }
+        }
+
+        private Stmt Stmts()
+        {
+            return look.Tag == '}' ? Inter.Stmt.Null : new Seq(Stmt(), Stmts());
+        }
+
+        private VarType Type()
+        {
+            var p = (VarType)look;
+            Match(Tag.BASIC);
+            return look.Tag != '[' ? p : Dims(p);
+        }
+
+        private Expr UnaryExpr()
+        {
+            if (look.Tag == '+')
+            {
+                Move();
+                return UnaryExpr();
+            }
+            if (look.Tag == '-')
+            {
+                Move();
+                return new Unary(Word.MINUS, UnaryExpr());
+            }
+            if (look.Tag == Tag.NOT)
+            {
+                var tok = look;
+                Move();
+                return new Not(tok, UnaryExpr());
+            }
+            return FactorExpr();
+        }
+
+        #endregion
     }
 }
