@@ -46,8 +46,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicMethods.cs" />
+    <Compile Include="Inter\SetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Lexical\" />
+    <Folder Include="Parser\" />
+    <Folder Include="Symbols\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Parser\Parser.csproj">
+      <Project>{8D14891B-62DA-4C8E-B9AF-F1F2195BBEE3}</Project>
+      <Name>Parser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
