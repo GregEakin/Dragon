@@ -9,9 +9,6 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Constant : Expr
     {
         public Constant(Token tok, VarType p)

@@ -9,23 +9,20 @@ using Lexical;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Node
     {
-        private static int labels;
+        private static int _labels;
 
-        public readonly int lexline;
+        public int Lexline { get; }
 
         public Node()
         {
-            lexline = Lexer.Line;
+            Lexline = Lexer.Line;
         }
 
         public int NewLabel()
         {
-            return ++labels;
+            return ++_labels;
         }
 
         public void EmitLabel(int i)

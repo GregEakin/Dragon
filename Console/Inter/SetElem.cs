@@ -9,22 +9,19 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class SetElem : Stmt
     {
-        public readonly Id array;
-        public readonly Expr index;
-        public readonly Expr expr;
+        public Id Array { get; }
+        public Expr Index { get; }
+        public Expr Expr { get; }
 
         public SetElem(Access x, Expr y)
         {
-            array = x.array;
-            index = x.index;
-            expr = y;
-            if (Check(x.type, expr.type) == null)
-                throw new Error("near line " + lexline + ": type error for " + x.type + ", " + expr.type);
+            Array = x.Array;
+            Index = x.Index;
+            Expr = y;
+            if (Check(x.Type, Expr.Type) == null)
+                throw new Error("near line " + Lexline + ": type error for " + x.Type + ", " + Expr.Type);
         }
 
         private static VarType Check(VarType p1, VarType p2)
@@ -41,9 +38,9 @@ namespace Inter
 
         public override void Gen(int b, int a)
         {
-            var s1 = index.Reduce();
-            var s2 = expr.Reduce();
-            Emit(array + " [ " + s1 + " ] = " + s2);
+            var s1 = Index.Reduce();
+            var s2 = Expr.Reduce();
+            Emit(Array + " [ " + s1 + " ] = " + s2);
         }
     }
 }

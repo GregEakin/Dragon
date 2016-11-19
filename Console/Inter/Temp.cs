@@ -8,23 +8,20 @@ using Lexical;
 using Symbols;
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Temp : Expr
     {
-        static int count;
-        readonly int number;
+        private static int _count;
+        private readonly int _number;
 
         public Temp(VarType p)
             : base(Word.TEMP, p)
         {
-            number = ++count;
+            _number = ++_count;
         }
 
         public override string ToString()
         {
-            return "t" + number;
+            return "t" + _number;
         }
     }
 }

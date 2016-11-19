@@ -10,20 +10,17 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Expr : Node
     {
-        public readonly Token op;
-        public readonly VarType type;
+        public Token Op { get; }
+        public VarType Type { get; }
 
         public Expr(Token tok, VarType p)
         {
-            op = tok;
-            type = p;
-            if (type == null)
-                throw new Error("near line " + lexline + ": type error");
+            Op = tok;
+            Type = p;
+            if (Type == null)
+                throw new Error("near line " + Lexline + ": type error");
         }
 
         public virtual Expr Gen()
@@ -54,7 +51,7 @@ namespace Inter
 
         public override string ToString()
         {
-            return op.ToString();
+            return Op.ToString();
         }
     }
 }

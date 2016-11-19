@@ -9,27 +9,24 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Unary : Op
     {
-        public readonly Expr expr;
+        private readonly Expr _expr;
 
         public Unary(Token tok, Expr x)
-            : base(tok, VarType.Max(VarType.INT, x.type))
+            : base(tok, VarType.Max(VarType.INT, x.Type))
         {
-            expr = x;
+            _expr = x;
         }
 
         public override Expr Gen()
         {
-            return new Unary(op, expr.Reduce());
+            return new Unary(Op, _expr.Reduce());
         }
 
         public override string ToString()
         {
-            return op + " " + expr;
+            return Op + " " + _expr;
         }
     }
 }

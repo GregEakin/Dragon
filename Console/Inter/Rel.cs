@@ -9,13 +9,10 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Rel : Logical
     {
         public Rel(Token tok, Expr x1, Expr x2)
-            : base(tok, x1, x2, Check(x1.type, x2.type))
+            : base(tok, x1, x2, Check(x1.Type, x2.Type))
         { }
 
         private static VarType Check(VarType p1, VarType p2)
@@ -30,9 +27,9 @@ namespace Inter
 
         public override void Jumping(int t, int f)
         {
-            Expr a = expr1.Reduce();
-            Expr b = expr2.Reduce();
-            string test = a + " " + op + " " + b;
+            var a = Expr1.Reduce();
+            var b = Expr2.Reduce();
+            var test = a + " " + Op + " " + b;
             EmitJumps(test, t, f);
         }
     }

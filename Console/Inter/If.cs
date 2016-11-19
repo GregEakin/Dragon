@@ -9,28 +9,25 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class If : Stmt
     {
-        readonly Expr expr;
-        readonly Stmt stmt;
+        private readonly Expr _expr;
+        private readonly Stmt _stmt;
 
         public If(Expr x, Stmt s)
         {
-            expr = x;
-            stmt = s;
-            if (expr.type != VarType.BOOL)
-                throw new Error("near line " + expr.lexline + ": boolean required in if, not " + expr.type);
+            _expr = x;
+            _stmt = s;
+            if (_expr.Type != VarType.BOOL)
+                throw new Error("near line " + _expr.Lexline + ": boolean required in if, not " + _expr.Type);
         }
 
         public override void Gen(int b, int a)
         {
-            int label = NewLabel();
-            expr.Jumping(0, a);
+            var label = NewLabel();
+            _expr.Jumping(0, a);
             EmitLabel(label);
-            stmt.Gen(label, a);
+            _stmt.Gen(label, a);
         }
     }
 }

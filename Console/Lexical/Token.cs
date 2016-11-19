@@ -10,16 +10,16 @@ namespace Lexical
 {
     public class Token
     {
-        public readonly int Tag;
+        public int Tag { get; }
 
         public Token(int tag) 
         { 
-            this.Tag = tag;
+            Tag = tag;
         }
         
         public override string ToString()
         {
-            return ((char)this.Tag).ToString(CultureInfo.InvariantCulture);
+            return ((char)Tag).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

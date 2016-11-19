@@ -12,27 +12,28 @@ namespace Symbols
 {
     public class Env
     {
-        private readonly Dictionary<Token, Id> table = new Dictionary<Token, Id>();
+        private readonly Dictionary<Token, Id> _table = new Dictionary<Token, Id>();
 
-        protected readonly Env prev;
+        protected Env Prev { get; }
 
         public Env(Env n)
         {
-            prev = n;
+            Prev = n;
         }
 
         public void Put(Token w, Id i)
         {
-            table.Add(w, i);
+            _table.Add(w, i);
         }
 
         public Id Get(Token w)
         {
-            for (Env e = this; e != null; e = e.prev)
+            for (var e = this; e != null; e = e.Prev)
             {
-                if (e.table.ContainsKey(w))
-                    return (Id)e.table[w];
+                if (e._table.ContainsKey(w))
+                    return (Id)e._table[w];
             }
+
             return null;
         }
     }

@@ -8,7 +8,7 @@ namespace Lexical
 {
     public class Word : Token
     {
-        public readonly string Lexeme;
+        public string Lexeme { get; }
 
         public Word(string s, int tag)
             : base(tag)

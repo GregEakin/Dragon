@@ -15,13 +15,13 @@ namespace Parser
     {
         #region Fields
 
-        private readonly Lexer lex;
+        private readonly Lexer _lex;
 
-        private Token look;
+        private Token _look;
 
-        private Env top;
+        private Env _top;
 
-        private int used;
+        private int _used;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace Parser
 
         public Parser(Lexer l)
         {
-            lex = l;
+            _lex = l;
             Move();
         }
 
@@ -54,9 +54,9 @@ namespace Parser
         private Expr AddExpr()
         {
             var x = MultExpr();
-            while (look.Tag == '+' || look.Tag == '-')
+            while (_look.Tag == '+' || _look.Tag == '-')
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 x = new Arith(tok, x, MultExpr());
             }
@@ -66,12 +66,12 @@ namespace Parser
         private Stmt AssignStmt()
         {
             Stmt stmt;
-            var t = look;
+            var t = _look;
             Match(Tag.ID);
-            var id = top.Get(t);
+            var id = _top.Get(t);
             if (id == null)
                 throw new Error("near line " + Lexer.Line + ": " + t + " undeclared");
-            if (look.Tag == '=')
+            if (_look.Tag == '=')
             {
                 Move();
                 stmt = new Set(id, BoolExpr());
@@ -89,21 +89,21 @@ namespace Parser
         private Stmt Block()
         {
             Match('{');
-            var savedEnv = top;
-            top = new Env(top);
+            var savedEnv = _top;
+            _top = new Env(_top);
             Decls();
             var s = Stmts();
             Match('}');
-            top = savedEnv;
+            _top = savedEnv;
             return s;
         }
 
         private Expr BoolExpr()
         {
             var x = JoinExpr();
-            while (look.Tag == Tag.OR)
+            while (_look.Tag == Tag.OR)
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 x = new Or(tok, x, JoinExpr());
             }
@@ -112,25 +112,25 @@ namespace Parser
 
         private void Decls()
         {
-            while (look.Tag == Tag.BASIC)
+            while (_look.Tag == Tag.BASIC)
             {
                 var p = Type();
-                var tok = look;
+                var tok = _look;
                 Match(Tag.ID);
                 Match(';');
-                var id = new Id((Word)tok, p, used);
-                top.Put(tok, id);
-                used = used + p.width;
+                var id = new Id((Word)tok, p, _used);
+                _top.Put(tok, id);
+                _used = _used + p.Width;
             }
         }
 
         private VarType Dims(VarType p)
         {
             Match('[');
-            var tok = look;
+            var tok = _look;
             Match(Tag.NUM);
             Match(']');
-            if (look.Tag == '[')
+            if (_look.Tag == '[')
                 p = Dims(p);
             return new Array(((Num)tok).Value, p);
         }
@@ -138,9 +138,9 @@ namespace Parser
         private Expr EqualityExpr()
         {
             var x = RelExpr();
-            while (look.Tag == Tag.EQ || look.Tag == Tag.NE)
+            while (_look.Tag == Tag.EQ || _look.Tag == Tag.NE)
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 x = new Rel(tok, x, RelExpr());
             }
@@ -150,9 +150,9 @@ namespace Parser
         private Expr ExponentExpr()
         {
             var x = UnaryExpr();
-            while (look.Tag == '^')
+            while (_look.Tag == '^')
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 x = new Arith(tok, x, UnaryExpr());
             }
@@ -162,7 +162,7 @@ namespace Parser
         private Expr FactorExpr()
         {
             Expr x;
-            switch (look.Tag)
+            switch (_look.Tag)
             {
                 case '(':
                     Move();
@@ -170,11 +170,11 @@ namespace Parser
                     Match(')');
                     return x;
                 case Tag.NUM:
-                    x = new Constant(look, VarType.INT);
+                    x = new Constant(_look, VarType.INT);
                     Move();
                     return x;
                 case Tag.REAL:
-                    x = new Constant(look, VarType.FLOAT);
+                    x = new Constant(_look, VarType.FLOAT);
                     Move();
                     return x;
                 case Tag.TRUE:
@@ -186,11 +186,11 @@ namespace Parser
                     Move();
                     return x;
                 case Tag.ID:
-                    var id = top.Get(look);
+                    var id = _top.Get(_look);
                     if (id == null)
-                        throw new Error("near line " + Lexer.Line + ": " + look + " undeclared");
+                        throw new Error("near line " + Lexer.Line + ": " + _look + " undeclared");
                     Move();
-                    return look.Tag != '[' ? (Expr)id : Offset(id);
+                    return _look.Tag != '[' ? (Expr)id : Offset(id);
                 default:
                     throw new Error("near line " + Lexer.Line + ": syntax error");
             }
@@ -199,9 +199,9 @@ namespace Parser
         private Expr JoinExpr()
         {
             var x = EqualityExpr();
-            while (look.Tag == Tag.AND)
+            while (_look.Tag == Tag.AND)
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 x = new And(tok, x, EqualityExpr());
             }
@@ -210,23 +210,23 @@ namespace Parser
 
         private void Match(int t)
         {
-            if (look.Tag == t)
+            if (_look.Tag == t)
                 Move();
             else
-                throw new Error("near line " + Lexer.Line + ": syntax error look.tag " + look.Tag + " != " + t);
+                throw new Error("near line " + Lexer.Line + ": syntax error look.tag " + _look.Tag + " != " + t);
         }
 
         private void Move()
         {
-            look = lex.Scan();
+            _look = _lex.Scan();
         }
 
         private Expr MultExpr()
         {
             var x = ExponentExpr();
-            while (look.Tag == '*' || look.Tag == '/')
+            while (_look.Tag == '*' || _look.Tag == '/')
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 x = new Arith(tok, x, UnaryExpr());
             }
@@ -235,37 +235,38 @@ namespace Parser
 
         private Access Offset(Id a)
         {
-            var type = a.type;
+            var type = a.Type;
             Match('[');
             var i = BoolExpr();
             Match(']');
             type = ((Array)type).Of;
-            var w = new Constant(type.width);
+            var w = new Constant(type.Width);
             var t1 = new Arith(new Token('*'), i, w);
             var loc = t1;
-            while (look.Tag == '[')
+            while (_look.Tag == '[')
             {
                 Match('[');
                 i = BoolExpr();
                 Match(']');
                 type = ((Array)type).Of;
-                w = new Constant(type.width);
+                w = new Constant(type.Width);
                 t1 = new Arith(new Token('*'), i, w);
                 loc = new Arith(new Token('+'), loc, t1);
             }
+
             return new Access(a, loc, type);
         }
 
         private Expr RelExpr()
         {
             var x = AddExpr();
-            switch (look.Tag)
+            switch (_look.Tag)
             {
                 case '<':
                 case Tag.LE:
                 case Tag.GE:
                 case '>':
-                    var tok = look;
+                    var tok = _look;
                     Move();
                     return new Rel(tok, x, AddExpr());
                 default:
@@ -278,7 +279,7 @@ namespace Parser
             Expr x;
             Stmt s1;
             Stmt savedStmt;
-            switch (look.Tag)
+            switch (_look.Tag)
             {
                 case ';':
                     Move();
@@ -290,7 +291,7 @@ namespace Parser
                     x = BoolExpr();
                     Match(')');
                     s1 = Stmt();
-                    if (look.Tag != Tag.ELSE)
+                    if (_look.Tag != Tag.ELSE)
                         return new If(x, s1);
                     Match(Tag.ELSE);
                     var s2 = Stmt();
@@ -339,34 +340,35 @@ namespace Parser
 
         private Stmt Stmts()
         {
-            return look.Tag == '}' ? Inter.Stmt.Null : new Seq(Stmt(), Stmts());
+            return _look.Tag == '}' ? Inter.Stmt.Null : new Seq(Stmt(), Stmts());
         }
 
         private VarType Type()
         {
-            var p = (VarType)look;
+            var p = (VarType)_look;
             Match(Tag.BASIC);
-            return look.Tag != '[' ? p : Dims(p);
+            return _look.Tag != '[' ? p : Dims(p);
         }
 
         private Expr UnaryExpr()
         {
-            if (look.Tag == '+')
+            if (_look.Tag == '+')
             {
                 Move();
                 return UnaryExpr();
             }
-            if (look.Tag == '-')
+            if (_look.Tag == '-')
             {
                 Move();
                 return new Unary(Word.MINUS, UnaryExpr());
             }
-            if (look.Tag == Tag.NOT)
+            if (_look.Tag == Tag.NOT)
             {
-                var tok = look;
+                var tok = _look;
                 Move();
                 return new Not(tok, UnaryExpr());
             }
+
             return FactorExpr();
         }
 

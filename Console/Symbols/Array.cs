@@ -10,12 +10,12 @@ namespace Symbols
 
     public class Array : VarType
     {
-        public readonly VarType Of;
+        public VarType Of { get; }
 
-        public readonly int Size;
+        public int Size { get; }
 
         public Array(int sz, VarType p)
-            : base("[]", Lexical.Tag.INDEX, sz * p.width)
+            : base("[]", Lexical.Tag.INDEX, sz * p.Width)
         {
             Size = sz;
             Of = p;

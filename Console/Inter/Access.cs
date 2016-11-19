@@ -9,29 +9,26 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Access : Op
     {
-        public readonly Id array;
-        public readonly Expr index;
+        public Id Array { get; }
+        public Expr Index { get; }
 
         public Access(Id a, Expr i, VarType p)
             : base(new Word("[]", Tag.INDEX), p)
         {
-            array = a;
-            index = i;
+            Array = a;
+            Index = i;
         }
 
         public override Expr Gen()
         {
-            return new Access(array, index.Reduce(), type);
+            return new Access(Array, Index.Reduce(), Type);
         }
 
         public override string ToString()
         {
-            return array + " [ " + index + " ]";
+            return Array + " [ " + Index + " ]";
         }
     }
 }

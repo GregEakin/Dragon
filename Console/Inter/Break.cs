@@ -8,23 +8,20 @@ using ConsoleX;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Break : Stmt
     {
-        readonly Stmt stmt;
+        private readonly Stmt _stmt;
 
         public Break()
         {
-            if (Stmt.Enclosing == Stmt.Null)
-                throw new Error("near line " + lexline + ": unenclosed  break");
-            stmt = Stmt.Enclosing;
+            if (Enclosing == Null)
+                throw new Error("near line " + Lexline + ": unenclosed  break");
+            _stmt = Enclosing;
         }
 
         public override void Gen(int b, int a)
         {
-            Emit("goto L" + stmt.After);
+            Emit("goto L" + _stmt.After);
         }
     }
 }

@@ -10,9 +10,9 @@ namespace ConsoleX
     using Lexical;
     using Parser;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var lex = new Lexer();
             var parser = new Parser(lex);

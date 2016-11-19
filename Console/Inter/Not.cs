@@ -8,9 +8,6 @@ namespace Inter
 {
     using Lexical;
 
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Not : Logical
     {
         public Not(Token tok, Expr x2)
@@ -19,12 +16,12 @@ namespace Inter
 
         public override void Jumping(int t, int f)
         {
-            expr2.Jumping(f, t);
+            Expr2.Jumping(f, t);
         }
 
         public override string ToString()
         {
-            return op + " " + expr2;
+            return Op + " " + Expr2;
         }
     }
 }

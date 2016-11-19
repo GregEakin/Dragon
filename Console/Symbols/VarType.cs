@@ -8,17 +8,14 @@ using Lexical;
 
 namespace Symbols
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class VarType : Word
     {
-        public readonly int width;
+        public int Width { get; }
 
         public VarType(string s, int tag, int w)
             : base(s, tag)
         {
-            width = w;
+            Width = w;
         }
 
         public static readonly VarType
@@ -29,18 +26,18 @@ namespace Symbols
 
         public static bool Numeric(VarType p)
         {
-            return p == VarType.CHAR || p == VarType.INT || p == VarType.FLOAT;
+            return p == CHAR || p == INT || p == FLOAT;
         }
 
         public static VarType Max(VarType p1, VarType p2)
         {
             if (!Numeric(p1) || !Numeric(p2))
                 return null;
-            if (p1 == VarType.FLOAT || p2 == VarType.FLOAT)
-                return VarType.FLOAT;
-            if (p1 == VarType.INT || p2 == VarType.INT)
-                return VarType.INT;
-            return VarType.CHAR;
+            if (p1 == FLOAT || p2 == FLOAT)
+                return FLOAT;
+            if (p1 == INT || p2 == INT)
+                return INT;
+            return CHAR;
         }
     }
 }

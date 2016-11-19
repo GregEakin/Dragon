@@ -9,29 +9,26 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Arith : Op
     {
-        public readonly Expr expr1;
-        public readonly Expr expr2;
+        public Expr Expr1 { get; }
+        public Expr Expr2 { get; }
 
         public Arith(Token tok, Expr x1, Expr x2)
-            : base(tok, VarType.Max(x1.type, x2.type))
+            : base(tok, VarType.Max(x1.Type, x2.Type))
         {
-            expr1 = x1;
-            expr2 = x2;
+            Expr1 = x1;
+            Expr2 = x2;
         }
 
         public override Expr Gen()
         {
-            return new Arith(op, expr1.Reduce(), expr2.Reduce());
+            return new Arith(Op, Expr1.Reduce(), Expr2.Reduce());
         }
 
         public override string ToString()
         {
-            return expr1 + " " + op + " " + expr2;
+            return Expr1 + " " + Op + " " + Expr2;
         }
     }
 }

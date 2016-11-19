@@ -8,7 +8,7 @@ namespace Lexical
 {
     public class Num : Token
     {
-        public readonly int Value;
+        public int Value { get; }
 
         public Num(int v)
             : base(Lexical.Tag.NUM)

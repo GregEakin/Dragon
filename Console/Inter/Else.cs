@@ -9,34 +9,31 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Else : Stmt
     {
-        readonly Expr expr;
-        readonly Stmt stmt1;
-        readonly Stmt stmt2;
+        private readonly Expr _expr;
+        private readonly Stmt _stmt1;
+        private readonly Stmt _stmt2;
 
         public Else(Expr x, Stmt s1, Stmt s2)
         {
-            expr = x;
-            stmt1 = s1;
-            stmt2 = s2;
-            if (expr.type != VarType.BOOL)
-                throw new Error("near line " + expr.lexline + ": boolean required in if, not " + expr.type);
+            _expr = x;
+            _stmt1 = s1;
+            _stmt2 = s2;
+            if (_expr.Type != VarType.BOOL)
+                throw new Error("near line " + _expr.Lexline + ": boolean required in if, not " + _expr.Type);
         }
 
         public override void Gen(int b, int a)
         {
-            int label1 = NewLabel();
-            int label2 = NewLabel();
-            expr.Jumping(0, label2);
+            var label1 = NewLabel();
+            var label2 = NewLabel();
+            _expr.Jumping(0, label2);
             EmitLabel(label1);
-            stmt1.Gen(label1, a);
+            _stmt1.Gen(label1, a);
             Emit("goto L" + a);
             EmitLabel(label2);
-            stmt2.Gen(label2, a);
+            _stmt2.Gen(label2, a);
         }
     }
 }

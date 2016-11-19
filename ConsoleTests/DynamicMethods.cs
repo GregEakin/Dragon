@@ -8,9 +8,9 @@
     [TestClass]
     public class DynamicMethods
     {
-        static int CSharpFact(int value)
+        private static int CSharpFact(int value)
         {
-            int result = 1;
+            var result = 1;
             while (value > 1)
             {
                 result *= value--;
@@ -18,7 +18,7 @@
             return result;
         }
 
-        static Func<int, int> ILFact()
+        private static Func<int, int> ILFact()
         {
             var method = new DynamicMethod("factorial", typeof(int), new[] { typeof(int) });
             var il = method.GetILGenerator();
@@ -57,12 +57,12 @@
             return (Func<int, int>)method.CreateDelegate(typeof(Func<int, int>));
         }
 
-        static Func<int, int> ETFact()
+        private static Func<int, int> ETFact()
         {
-            ParameterExpression value = Expression.Parameter(typeof(int), "value");
-            ParameterExpression result = Expression.Parameter(typeof(int), "result");
-            LabelTarget label = Expression.Label(typeof(int));
-            BlockExpression block = Expression.Block(
+            var value = Expression.Parameter(typeof(int), "value");
+            var result = Expression.Parameter(typeof(int), "result");
+            var label = Expression.Label(typeof(int));
+            var block = Expression.Block(
                 new[] { result },
                 Expression.Assign(result, Expression.Constant(1)),
                 Expression.Loop(

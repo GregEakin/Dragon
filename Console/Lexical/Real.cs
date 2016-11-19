@@ -8,7 +8,7 @@ namespace Lexical
 {
     public class Real : Token
     {
-        public readonly float Value;
+        public float Value { get; }
 
         public Real(float v)
             : base(Lexical.Tag.REAL)

@@ -4,22 +4,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Lexical;
+using Symbols;
+
 namespace Inter
 {
-    using Lexical;
-    using Symbols;
-
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Id : Expr
     {
-        public readonly int offset;
+        public int Offset { get; }
 
         public Id(Word id, VarType p, int b) 
             : base(id, p) 
         { 
-            offset = b; 
+            Offset = b; 
         }
     }
 }

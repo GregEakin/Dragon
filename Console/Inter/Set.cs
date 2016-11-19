@@ -9,20 +9,17 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Set : Stmt
     {
-        public readonly Id id;
-        public readonly Expr expr;
+        public Id Id { get; }
+        public Expr Expr { get; }
 
         public Set(Id i, Expr x)
         {
-            id = i;
-            expr = x;
-            if (Check(id.type, expr.type) == null)
-                throw new Error("near line " + lexline + ": type error for " + id.type + ", " + expr.type);
+            Id = i;
+            Expr = x;
+            if (Check(Id.Type, Expr.Type) == null)
+                throw new Error("near line " + Lexline + ": type error for " + Id.Type + ", " + Expr.Type);
         }
 
         private static VarType Check(VarType p1, VarType p2)
@@ -37,7 +34,7 @@ namespace Inter
 
         public override void Gen(int b, int a)
         {
-            Emit(id + " = " + expr.Gen());
+            Emit(Id + " = " + Expr.Gen());
         }
     }
 }

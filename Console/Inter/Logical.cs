@@ -9,26 +9,23 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Logical : Expr
     {
-        public readonly Expr expr1;
-        public readonly Expr expr2;
+        public Expr Expr1 { get; }
+        public Expr Expr2 { get; }
 
         public Logical(Token tok, Expr x1, Expr x2)
-            : base(tok, Check(x1.type, x2.type))
+            : base(tok, Check(x1.Type, x2.Type))
         {
-            expr1 = x1;
-            expr2 = x2;
+            Expr1 = x1;
+            Expr2 = x2;
         }
 
         protected Logical(Token tok, Expr x1, Expr x2, VarType type)
             : base(tok, type)
         {
-            expr1 = x1;
-            expr2 = x2;
+            Expr1 = x1;
+            Expr2 = x2;
         }
 
         private static VarType Check(VarType p1, VarType p2)
@@ -43,7 +40,7 @@ namespace Inter
         {
             var f = NewLabel();
             var a = NewLabel();
-            var temp = new Temp(type);
+            var temp = new Temp(Type);
             Jumping(0, f);
             Emit(temp + " = true");
             Emit("goto L" + a);
@@ -55,7 +52,7 @@ namespace Inter
 
         public override string ToString()
         {
-            return expr1 + " " + op + " " + expr2;
+            return Expr1 + " " + Op + " " + Expr2;
         }
     }
 }

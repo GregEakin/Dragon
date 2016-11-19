@@ -13,11 +13,9 @@ namespace Lexical
 
     public class Lexer
     {
-        private readonly Dictionary<string, Word> words = new Dictionary<string, Word>();
+        private readonly Dictionary<string, Word> _words = new Dictionary<string, Word>();
 
-        private static int line = 1;
-
-        private char peek = ' ';
+        private char _peek = ' ';
 
         public Lexer()
         {
@@ -37,33 +35,27 @@ namespace Lexical
             Reserve(VarType.FLOAT);
         }
 
-        public static int Line
-        {
-            get
-            {
-                return line;
-            }
-        }
+        public static int Line { get; private set; } = 1;
 
         private void ReadCh()
         {
-            peek = (char)Console.Read();
+            _peek = (char)Console.Read();
         }
 
         private bool ReadCh(char c)
         {
             ReadCh();
-            if (peek != c)
+            if (_peek != c)
                 return false;
-            peek = ' ';
+            _peek = ' ';
             return true;
         }
 
         private bool ReadChAgain(char c)
         {
-            if (peek != c)
+            if (_peek != c)
                 return false;
-            peek = ' ';
+            _peek = ' ';
             return true;
         }
 
@@ -71,73 +63,73 @@ namespace Lexical
         {
             for (; ; ReadCh())
             {
-                if (peek == ' ' || peek == '\t' || peek == '\r')
+                if (_peek == ' ' || _peek == '\t' || _peek == '\r')
                     continue;
-                if (peek == '\n')
-                    line = line + 1;
+                if (_peek == '\n')
+                    Line = Line + 1;
                 else
                     break;
             }
 
-            switch (peek)
+            switch (_peek)
             {
                 case '=':
-                    return this.ReadCh('=') ? Word.EQ : new Token('=');
+                    return ReadCh('=') ? Word.EQ : new Token('=');
                 case '<':
-                    return this.ReadCh('>') ? Word.NE : (this.ReadChAgain('=') ? Word.LE : new Token('<'));
+                    return ReadCh('>') ? Word.NE : (ReadChAgain('=') ? Word.LE : new Token('<'));
                 case '>':
-                    return this.ReadCh('=') ? Word.GE : new Token('>');
+                    return ReadCh('=') ? Word.GE : new Token('>');
             }
 
-            if (char.IsDigit(peek))
+            if (char.IsDigit(_peek))
             {
                 var v = 0;
                 do
                 {
-                    v = 10 * v + (int)char.GetNumericValue(peek);
+                    v = 10 * v + (int)char.GetNumericValue(_peek);
                     ReadCh();
                 }
-                while (char.IsDigit(peek));
-                if (peek != '.')
+                while (char.IsDigit(_peek));
+                if (_peek != '.')
                     return new Num(v);
                 var x = (float)v;
                 var d = 10.0f;
                 while (true)
                 {
                     ReadCh();
-                    if (!char.IsDigit(peek))
+                    if (!char.IsDigit(_peek))
                         break;
-                    x = x + (int)char.GetNumericValue(peek) / d;
+                    x = x + (int)char.GetNumericValue(_peek) / d;
                     d = d * 10.0f;
                 }
                 return new Real(x);
             }
 
-            if (char.IsLetter(peek))
+            if (char.IsLetter(_peek))
             {
                 var b = new StringBuilder();
                 do
                 {
-                    b.Append(peek);
+                    b.Append(_peek);
                     ReadCh();
                 }
-                while (char.IsLetterOrDigit(peek));
+                while (char.IsLetterOrDigit(_peek));
                 var s = b.ToString();
-                if (words.ContainsKey(s))
-                    return words[s];
+                if (_words.ContainsKey(s))
+                    return _words[s];
                 var w = new Word(s, Tag.ID);
-                words.Add(s, w);
+                _words.Add(s, w);
                 return w;
             }
 
-            var tok = new Token(peek);
-            peek = ' ';
+            var tok = new Token(_peek);
+            _peek = ' ';
             return tok;
         }
 
         private void Reserve(Word w)
         {
-            words.Add(w.Lexeme, w);
+            _words.Add(w.Lexeme, w);
         }
     }
 }

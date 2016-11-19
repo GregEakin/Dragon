@@ -9,9 +9,6 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class Op : Expr
     {
         public Op(Token tok, VarType p)
@@ -20,8 +17,8 @@ namespace Inter
 
         public override Expr Reduce()
         {
-            Expr x = Gen();
-            Temp t = new Temp(type);
+            var x = Gen();
+            var t = new Temp(Type);
             Emit(t + " = " + x);
             return t;
         }

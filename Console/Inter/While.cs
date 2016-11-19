@@ -9,29 +9,26 @@ using Symbols;
 
 namespace Inter
 {
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     public class While : Stmt
     {
-        private Expr expr;
-        private Stmt stmt;
+        private Expr _expr;
+        private Stmt _stmt;
 
         public void Init(Expr x, Stmt s)
         {
-            expr = x;
-            stmt = s;
-            if (expr.type != VarType.BOOL)
-                throw new Error("near line " + expr.lexline + ": boolean required in while, not " + expr.type);
+            _expr = x;
+            _stmt = s;
+            if (_expr.Type != VarType.BOOL)
+                throw new Error("near line " + _expr.Lexline + ": boolean required in while, not " + _expr.Type);
         }
 
         public override void Gen(int b, int a)
         {
             After = a;
-            expr.Jumping(0, a);
-            int label = NewLabel();
+            _expr.Jumping(0, a);
+            var label = NewLabel();
             EmitLabel(label);
-            stmt.Gen(label, b);
+            _stmt.Gen(label, b);
             Emit("goto L" + b);
         }
     }
