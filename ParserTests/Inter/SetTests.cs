@@ -1,4 +1,5 @@
-﻿using ConsoleX;
+﻿using System.IO;
+using ConsoleX;
 using Inter;
 using Lexical;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,10 +11,10 @@ namespace ConsoleTests.Inter
     public class SetTests
     {
         [TestMethod]
-        public void CtorNumericTest()
+        public void SetCtorNumericTest()
         {
-            var var = new Word("var", Tag.ID);
-            var id = new Id(var, VarType.INT, 0);
+            var x = new Word("x", Tag.ID);
+            var id = new Id(x, VarType.INT, 0);
             var num = new Num(12);
             var expr = new Constant(num, VarType.INT);
             var set = new Set(id, expr);
@@ -23,38 +24,43 @@ namespace ConsoleTests.Inter
         }
 
         [TestMethod]
-        public void CtorBoolTest()
+        public void SetCtorBoolTest()
         {
-            var var = new Word("var", Tag.ID);
-            var id = new Id(var, VarType.BOOL, 0);
+            var x = new Word("x", Tag.ID);
+            var id = new Id(x, VarType.BOOL, 0);
             var expr = new Constant(Word.FALSE, VarType.BOOL);
             var set = new Set(id, expr);
 
-            Assert.AreEqual(set.Id, i);
-            Assert.AreEqual(set.Expr, x);
+            Assert.AreEqual(set.Id, id);
+            Assert.AreEqual(set.Expr, expr);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Error))]
-        public void CtorInvalidTest()
+        public void SetCtorInvalidTest()
         {
-            var var = new Word("var", Tag.ID);
-            var id = new Id(var, VarType.INT, 0);
+            var x = new Word("x", Tag.ID);
+            var id = new Id(x, VarType.INT, 0);
             var expr = new Constant(Word.FALSE, VarType.BOOL);
             var set = new Set(id, expr);
         }
 
         [TestMethod]
-        public void GenTest()
+        public void SetGenTest()
         {
-            var var = new Word("var", Tag.ID);
-            var id = new Id(var, VarType.INT, 0);
-            var num = new Num(12);
-            var expr = new Constant(num, VarType.INT);
-            var set = new Set(id, expr);
+            using (var cout = new StringWriter())
+            {
+                Node.Cout = cout;
 
-            // "var = 12"
-            set.Gen(1, 2);
+                var x = new Word("x", Tag.ID);
+                var id = new Id(x, VarType.INT, 0);
+                var num = new Num(12);
+                var expr = new Constant(num, VarType.INT);
+                var set = new Set(id, expr);
+                set.Gen(1, 2);
+
+                Assert.AreEqual("\tx = 12\r\n", cout.ToString());
+            }
         }
     }
 }

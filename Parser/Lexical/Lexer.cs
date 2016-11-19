@@ -7,6 +7,7 @@
 namespace Lexical
 {
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.Text;
     using Symbols;
@@ -14,6 +15,8 @@ namespace Lexical
     public class Lexer
     {
         private readonly Dictionary<string, Word> _words = new Dictionary<string, Word>();
+
+        private static TextReader Cin { get; set; } = Console.In;
 
         private char _peek = ' ';
 
@@ -39,7 +42,7 @@ namespace Lexical
 
         private void ReadCh()
         {
-            _peek = (char)Console.Read();
+            _peek = (char)Cin.Read();
         }
 
         private bool ReadCh(char c)

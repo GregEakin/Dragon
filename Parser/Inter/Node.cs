@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.IO;
 using Lexical;
 
 namespace Inter
@@ -12,6 +13,8 @@ namespace Inter
     public class Node
     {
         private static int _labels;
+
+        public static TextWriter Cout { get; set; } = Console.Out;
 
         public int Lexline { get; }
 
@@ -27,12 +30,12 @@ namespace Inter
 
         public void EmitLabel(int i)
         {
-            Console.Write("L" + i + ":");
+            Cout.WriteLine("L" + i + ":");
         }
 
         public void Emit(string s)
         {
-            Console.WriteLine("\t" + s);
+            Cout.WriteLine("\t" + s);
         }
     }
 }
