@@ -46,7 +46,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicMethods.cs" />
+    <Compile Include="Inter\AccessTests.cs" />
+    <Compile Include="Inter\AndTests.cs" />
+    <Compile Include="Inter\ArithTests.cs" />
+    <Compile Include="Inter\BreakTest.cs" />
+    <Compile Include="Inter\ConstantTests.cs" />
+    <Compile Include="Inter\DoTests.cs" />
+    <Compile Include="Inter\ElseTests.cs" />
+    <Compile Include="Inter\ExprTests.cs" />
+    <Compile Include="Inter\IdTests.cs" />
+    <Compile Include="Inter\IfTests.cs" />
+    <Compile Include="Inter\LogicalTests.cs" />
+    <Compile Include="Inter\NodeTests.cs" />
+    <Compile Include="Inter\SetElemTests.cs" />
     <Compile Include="Inter\SetTests.cs" />
+    <Compile Include="Inter\WhileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
