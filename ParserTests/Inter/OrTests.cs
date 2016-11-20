@@ -12,7 +12,7 @@ namespace ConsoleTests.Inter
         [TestMethod]
         public void OrCtorTest()
         {
-            var token = new Token('|');
+            var token = new Word("or", Tag.OR);
             var exp1 = new Expr(Word.TRUE, VarType.BOOL);
             var exp2 = new Expr(Word.FALSE, VarType.BOOL);
             var or = new Or(token, exp1, exp2);
@@ -30,7 +30,7 @@ namespace ConsoleTests.Inter
             {
                 Node.Cout = cout;
 
-                var token = new Token('|');
+                var token = new Word("or", Tag.OR);
                 var exp1 = new Expr(Word.TRUE, VarType.BOOL);
                 var exp2 = new Expr(Word.FALSE, VarType.BOOL);
                 var or = new Or(token, exp1, exp2);

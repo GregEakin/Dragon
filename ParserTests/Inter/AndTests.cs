@@ -12,7 +12,7 @@ namespace ConsoleTests.Inter
         [TestMethod]
         public void AndCtorTest()
         {
-            var token = new Token('&');
+            var token = new Word("and", Tag.AND);
             var exp1 = new Expr(Word.TRUE, VarType.BOOL);
             var exp2 = new Expr(Word.FALSE, VarType.BOOL);
             var and = new And(token, exp1, exp2);
@@ -30,7 +30,7 @@ namespace ConsoleTests.Inter
             {
                 Node.Cout = cout;
 
-                var token = new Token('&');
+                var token = new Word("and", Tag.AND);
                 var exp1 = new Expr(Word.TRUE, VarType.BOOL);
                 var exp2 = new Expr(Word.FALSE, VarType.BOOL);
                 var and = new And(token, exp1, exp2);
