@@ -62,6 +62,7 @@
     <Compile Include="Inter\OpTests.cs" />
     <Compile Include="Inter\OrTests.cs" />
     <Compile Include="Inter\RelTests.cs" />
+    <Compile Include="Inter\SeqTests.cs" />
     <Compile Include="Inter\SetElemTests.cs" />
     <Compile Include="Inter\SetTests.cs" />
     <Compile Include="Inter\WhileTests.cs" />
