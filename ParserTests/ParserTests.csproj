@@ -58,6 +58,7 @@
     <Compile Include="Inter\IfTests.cs" />
     <Compile Include="Inter\LogicalTests.cs" />
     <Compile Include="Inter\NodeTests.cs" />
+    <Compile Include="Inter\NotTests.cs" />
     <Compile Include="Inter\SetElemTests.cs" />
     <Compile Include="Inter\SetTests.cs" />
     <Compile Include="Inter\WhileTests.cs" />
