@@ -67,6 +67,7 @@
     <Compile Include="Inter\SetTests.cs" />
     <Compile Include="Inter\StmtTests.cs" />
     <Compile Include="Inter\TempTests.cs" />
+    <Compile Include="Inter\UnaryTests.cs" />
     <Compile Include="Inter\WhileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTest1.cs" />
