@@ -1,38 +1,48 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Word.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright 2024 Gregory Eakin
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-namespace Lexical
+// This is a C# front-end parser derived from the Dragon book, found in Appendix A.
+// Aho, Alfred V., and Alfred V. Aho. Compilers: Principles, Techniques, & Tools. Boston: Pearson / Addison Wesley, 2007. Print.
+
+namespace Dragon.Lexical;
+
+public class Word : Token
 {
-    public class Word : Token
+    public string Lexeme { get; }
+
+    public Word(string s, int tag)
+        : base(tag)
     {
-        public string Lexeme { get; }
-
-        public Word(string s, int tag)
-            : base(tag)
-        {
-            Lexeme = s;
-        }
-
-        public override string ToString()
-        {
-            return Lexeme;
-        }
-
-        public static readonly Word
-            AND = new Word("and", Lexical.Tag.AND),
-            OR = new Word("or", Lexical.Tag.OR),
-            NOT = new Word("not", Lexical.Tag.NOT),
-            EQ = new Word("==", Lexical.Tag.EQ),
-            NE = new Word("<>", Lexical.Tag.NE),
-            LE = new Word("<=", Lexical.Tag.LE),
-            GE = new Word(">=", Lexical.Tag.GE),
-            MINUS = new Word("minus", Lexical.Tag.MINUS),
-            PLUS = new Word("plus", Lexical.Tag.PLUS),
-            TRUE = new Word("true", Lexical.Tag.TRUE),
-            FALSE = new Word("false", Lexical.Tag.FALSE),
-            TEMP = new Word("t", Lexical.Tag.TEMP);
+        Lexeme = s;
     }
+
+    public override string ToString()
+    {
+        return Lexeme;
+    }
+
+    public static readonly Word
+        AND = new("and", Lexical.Tag.AND),
+        OR = new("or", Lexical.Tag.OR),
+        NOT = new("not", Lexical.Tag.NOT),
+        EQ = new("==", Lexical.Tag.EQ),
+        NE = new("<>", Lexical.Tag.NE),
+        LE = new("<=", Lexical.Tag.LE),
+        GE = new(">=", Lexical.Tag.GE),
+        MINUS = new("minus", Lexical.Tag.MINUS),
+        PLUS = new("plus", Lexical.Tag.PLUS),
+        TRUE = new("true", Lexical.Tag.TRUE),
+        FALSE = new("false", Lexical.Tag.FALSE),
+        TEMP = new("t", Lexical.Tag.TEMP);
 }

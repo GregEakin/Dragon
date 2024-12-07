@@ -1,59 +1,67 @@
-﻿using System.IO;
-using Inter;
-using Lexical;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Symbols;
+﻿// Copyright 2024 Gregory Eakin
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-namespace ConsoleTests.Inter
+using Dragon.Inter;
+using Dragon.Lexical;
+using Dragon.Symbols;
+
+namespace DragonTests.Inter;
+
+public class ArithTests
 {
-    [TestClass]
-    public class ArithTests
+    [Fact]
+    public void ArithCtorTest()
     {
-        [TestMethod]
-        public void ArithCtorTest()
-        {
-            var token = new Token('+');
-            var variable = new Id(new Word("x", Tag.ID), VarType.INT, 0);
-            var constant = new Constant(new Num(12), VarType.INT);
-            var arith = new Arith(token, variable, constant);
+        var token = new Token('+');
+        var variable = new Id(new Word("x", Tag.ID), VarType.INT, 0);
+        var constant = new Constant(new Num(12), VarType.INT);
+        var arith = new Arith(token, variable, constant);
 
-            Assert.AreEqual(variable, arith.Expr1);
-            Assert.AreEqual(constant, arith.Expr2);
-            Assert.AreEqual(token, arith.Op);
-            Assert.AreEqual(VarType.INT, arith.Type);
-            Assert.AreEqual("x + 12", arith.ToString());
-        }
+        Assert.Equal(variable, arith.Expr1);
+        Assert.Equal(constant, arith.Expr2);
+        Assert.Equal(token, arith.Op);
+        Assert.Equal(VarType.INT, arith.Type);
+        Assert.Equal("x + 12", arith.ToString());
+    }
 
-        [TestMethod]
-        public void ArithGenTest()
-        {
-            var token = new Token('+');
-            var variable = new Id(new Word("x", Tag.ID), VarType.INT, 0);
-            var constant = new Constant(new Num(12), VarType.INT);
-            var arith = new Arith(token, variable, constant);
+    [Fact]
+    public void ArithGenTest()
+    {
+        var token = new Token('+');
+        var variable = new Id(new Word("x", Tag.ID), VarType.INT, 0);
+        var constant = new Constant(new Num(12), VarType.INT);
+        var arith = new Arith(token, variable, constant);
 
-            var expresion = arith.Gen();
-            Assert.AreEqual(VarType.INT, expresion.Type);
-            Assert.AreEqual(token, expresion.Op);
-            Assert.AreEqual("x + 12", expresion.ToString());
-        }
+        var expression = arith.Gen();
+        Assert.Equal(VarType.INT, expression.Type);
+        Assert.Equal(token, expression.Op);
+        Assert.Equal("x + 12", expression.ToString());
+    }
 
-        [TestMethod]
-        public void ArithJumpingTest()
-        {
-            using (var cout = new StringWriter())
-            {
-                Node.Cout = cout;
+    [Fact]
+    public void ArithJumpingTest()
+    {
+        using var cout = new StringWriter();
+        Node.Cout = cout;
 
-                var token = new Token('+');
-                var variable = new Id(new Word("x", Tag.ID), VarType.INT, 0);
-                var constant = new Constant(new Num(12), VarType.INT);
-                var arith = new Arith(token, variable, constant);
-                arith.Jumping(22, 33);
+        var token = new Token('+');
+        var variable = new Id(new Word("x", Tag.ID), VarType.INT, 0);
+        var constant = new Constant(new Num(12), VarType.INT);
+        var arith = new Arith(token, variable, constant);
+        arith.Jumping(22, 33);
 
-                var actual = cout.ToString();
-                Assert.AreEqual("\tif x + 12 goto L22\r\n\tgoto L33\r\n", actual);
-            }
-        }
+        var actual = cout.ToString();
+        Assert.Equal("\tif x + 12 goto L22\r\n\tgoto L33\r\n", actual);
     }
 }

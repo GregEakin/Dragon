@@ -1,40 +1,46 @@
-﻿using System.IO;
-using Inter;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright 2024 Gregory Eakin
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-namespace ConsoleTests.Inter
+using Dragon.Inter;
+
+namespace DragonTests.Inter;
+
+public class NodeTests
 {
-    [TestClass]
-    public class NodeTests
+    [Fact]
+    public void NodeEmitLabelTest()
     {
-        [TestMethod]
-        public void NodeEmitLabelTest()
-        {
-            using (var cout = new StringWriter())
-            {
-                Node.Cout = cout;
+        using var cout = new StringWriter();
+        Node.Cout = cout;
 
-                var node = new Node();
-                node.EmitLabel(11);
+        var node = new Node();
+        node.EmitLabel(11);
 
-                var actual = cout.ToString();
-                Assert.AreEqual("L11:\r\n", actual);
-            }
-        }
+        var actual = cout.ToString();
+        Assert.Equal("L11:\r\n", actual);
+    }
 
-        [TestMethod]
-        public void NodeEmitTest()
-        {
-            using (var cout = new StringWriter())
-            {
-                Node.Cout = cout;
+    [Fact]
+    public void NodeEmitTest()
+    {
+        using var cout = new StringWriter();
+        Node.Cout = cout;
 
-                var node = new Node();
-                node.Emit("test");
+        var node = new Node();
+        node.Emit("test");
 
-                var actual = cout.ToString();
-                Assert.AreEqual("\ttest\r\n", actual);
-            }
-        }
+        var actual = cout.ToString();
+        Assert.Equal("\ttest\r\n", actual);
     }
 }

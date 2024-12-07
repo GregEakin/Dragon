@@ -1,90 +1,95 @@
-﻿using System.IO;
-using ConsoleX;
-using Inter;
-using Lexical;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Symbols;
+﻿// Copyright 2024 Gregory Eakin
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-namespace ConsoleTests.Inter
+using Dragon;
+using Dragon.Inter;
+using Dragon.Lexical;
+using Dragon.Symbols;
+
+namespace DragonTests.Inter;
+
+public class ExprTests
 {
-    [TestClass]
-    public class ExprTests
+    [Fact]
+    public void ExprNullTypeCtorTest()
     {
-        [TestMethod]
-        [ExpectedException(typeof(Error))]
-        public void ExprNullTypeCtorTest()
-        {
-            var toekn = new Word("x", Tag.ID);
-            var expr = new Expr(toekn, null);
-        }
+        var token = new Word("x", Tag.ID);
+        Assert.Throws<Error>(() => _ = new Expr(token, null));
+    }
 
-        [TestMethod]
-        public void ExprCtorTest()
-        {
-            var token = new Word("x", Tag.ID);
-            var expr = new Expr(token, VarType.INT);
+    [Fact]
+    public void ExprCtorTest()
+    {
+        var token = new Word("x", Tag.ID);
+        var expr = new Expr(token, VarType.INT);
 
-            Assert.AreSame(token, expr.Op);
-            Assert.AreSame(VarType.INT, expr.Type);
-        }
+        Assert.Same(token, expr.Op);
+        Assert.Same(VarType.INT, expr.Type);
+    }
 
-        [TestMethod]
-        public void ExprGenTest()
-        {
-            var token = new Word("x", Tag.ID);
-            var expr = new Expr(token, VarType.INT);
+    [Fact]
+    public void ExprGenTest()
+    {
+        var token = new Word("x", Tag.ID);
+        var expr = new Expr(token, VarType.INT);
 
-            Assert.AreSame(expr, expr.Gen());
-        }
+        Assert.Same(expr, expr.Gen());
+    }
 
-        [TestMethod]
-        public void ExprReduceTest()
-        {
-            var token = new Word("x", Tag.ID);
-            var expr = new Expr(token, VarType.INT);
+    [Fact]
+    public void ExprReduceTest()
+    {
+        var token = new Word("x", Tag.ID);
+        var expr = new Expr(token, VarType.INT);
 
-            Assert.AreSame(expr, expr.Reduce());
-        }
+        Assert.Same(expr, expr.Reduce());
+    }
 
-        [TestMethod]
-        public void ExprJumpingTest()
-        {
-            using (var cout = new StringWriter())
-            {
-                Node.Cout = cout;
+    [Fact]
+    public void ExprJumpingTest()
+    {
+        using var cout = new StringWriter();
+        Node.Cout = cout;
 
-                var token = new Word("x", Tag.ID);
-                var expr = new Expr(token, VarType.INT);
-                expr.Jumping(11, 22);
+        var token = new Word("x", Tag.ID);
+        var expr = new Expr(token, VarType.INT);
+        expr.Jumping(11, 22);
 
-                var actual = cout.ToString();
-                Assert.AreEqual("\tif x goto L11\r\n\tgoto L22\r\n", actual);
-            }
-        }
+        var actual = cout.ToString();
+        Assert.Equal("\tif x goto L11\r\n\tgoto L22\r\n", actual);
+    }
 
-        [TestMethod]
-        public void ExprEmitJumpsTest()
-        {
-            using (var cout = new StringWriter())
-            {
-                Node.Cout = cout;
+    [Fact]
+    public void ExprEmitJumpsTest()
+    {
+        using var cout = new StringWriter();
+        Node.Cout = cout;
 
-                var token = new Word("x", Tag.ID);
-                var expr = new Expr(token, VarType.INT);
-                expr.EmitJumps("test", 11, 22);
+        var token = new Word("x", Tag.ID);
+        var expr = new Expr(token, VarType.INT);
+        expr.EmitJumps("test", 11, 22);
 
-                var actual = cout.ToString();
-                Assert.AreEqual("\tif test goto L11\r\n\tgoto L22\r\n", actual);
-            }
-        }
+        var actual = cout.ToString();
+        Assert.Equal("\tif test goto L11\r\n\tgoto L22\r\n", actual);
+    }
 
-        [TestMethod]
-        public void ExprToStringTest()
-        {
-            var token = new Word("x", Tag.ID);
-            var expr = new Expr(token, VarType.INT);
+    [Fact]
+    public void ExprToStringTest()
+    {
+        var token = new Word("x", Tag.ID);
+        var expr = new Expr(token, VarType.INT);
 
-            Assert.AreEqual("x", expr.ToString());
-        }
+        Assert.Equal("x", expr.ToString());
     }
 }

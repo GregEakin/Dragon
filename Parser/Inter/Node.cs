@@ -1,41 +1,49 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Node.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
+﻿// Copyright 2024 Gregory Eakin
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-using System;
-using System.IO;
-using Lexical;
+// This is a C# front-end parser derived from the Dragon book, found in Appendix A.
+// Aho, Alfred V., and Alfred V. Aho. Compilers: Principles, Techniques, & Tools. Boston: Pearson / Addison Wesley, 2007. Print.
 
-namespace Inter
+using Dragon.Lexical;
+
+namespace Dragon.Inter;
+
+public class Node
 {
-    public class Node
+    private static int _labels;
+
+    public static TextWriter Cout { get; set; } = Console.Out;
+
+    public int Lexline { get; }
+
+    public Node()
     {
-        private static int _labels;
+        Lexline = Lexer.Line;
+    }
 
-        public static TextWriter Cout { get; set; } = Console.Out;
+    public int NewLabel()
+    {
+        return ++_labels;
+    }
 
-        public int Lexline { get; }
+    public void EmitLabel(int i)
+    {
+        Cout.WriteLine($"L{i}:");
+    }
 
-        public Node()
-        {
-            Lexline = Lexer.Line;
-        }
-
-        public int NewLabel()
-        {
-            return ++_labels;
-        }
-
-        public void EmitLabel(int i)
-        {
-            Cout.WriteLine("L" + i + ":");
-        }
-
-        public void Emit(string s)
-        {
-            Cout.WriteLine("\t" + s);
-        }
+    public void Emit(string s)
+    {
+        Cout.WriteLine($"\t{s}");
     }
 }

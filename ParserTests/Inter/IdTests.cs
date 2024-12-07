@@ -1,22 +1,33 @@
-﻿using Inter;
-using Lexical;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Symbols;
+﻿// Copyright 2024 Gregory Eakin
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-namespace ConsoleTests.Inter
+using Dragon.Inter;
+using Dragon.Lexical;
+using Dragon.Symbols;
+
+namespace DragonTests.Inter;
+
+public class IdTests
 {
-    [TestClass]
-    public class IdTests
+    [Fact]
+    public void IdCtorTest()
     {
-        [TestMethod]
-        public void IdCtorTest()
-        {
-            var token = new Word("x", Tag.ID);
-            var id = new Id(token, VarType.BOOL, 11);
+        var token = new Word("x", Tag.ID);
+        var id = new Id(token, VarType.BOOL, 11);
 
-            Assert.AreEqual(11, id.Offset);
-            Assert.AreEqual(token, id.Op);
-            Assert.AreEqual(VarType.BOOL, id.Type);
-        }
+        Assert.Equal(11, id.Offset);
+        Assert.Equal(token, id.Op);
+        Assert.Equal(VarType.BOOL, id.Type);
     }
 }
